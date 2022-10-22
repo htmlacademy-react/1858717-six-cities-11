@@ -6,7 +6,7 @@ type AppScreenProps = {
 
 function App({cardsCount}: AppScreenProps): JSX.Element {
   return (
-    <StartScreen cardsCount = {cardsCount} />
+    <StartScreen cardsCount={cardsCount} />
   );
 }
 
