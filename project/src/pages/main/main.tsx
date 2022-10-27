@@ -2,11 +2,11 @@ import Card from '../../components/card/card';
 import Logo from '../../components/logo/logo';
 import { Helmet } from 'react-helmet-async';
 
-type StartScreenProp = {
+type MainProp = {
   cardsCount: number;
 };
 
-function StartScreen({cardsCount}: StartScreenProp): JSX.Element {
+function Main({cardsCount}: MainProp): JSX.Element {
   return (
     <div className="page page--gray page--main">
       <Helmet>
@@ -113,4 +113,4 @@ function StartScreen({cardsCount}: StartScreenProp): JSX.Element {
   );
 }
 
-export default StartScreen;
+export default Main;

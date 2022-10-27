@@ -1,4 +1,4 @@
-import StartScreen from '../../pages/start-screen/start-screen';
+import Main from '../../pages/main/main';
 import Favorites from '../../pages/favorites/favorites';
 import Login from '../../pages/login/login';
 import Room from '../../pages/room/room';
@@ -18,7 +18,7 @@ function App({cardsCount}: AppScreenProps): JSX.Element {
       <BrowserRouter>
         <Routes>
           <Route path={AppRoute.Root}>
-            <Route index element={<StartScreen cardsCount={cardsCount} />} />
+            <Route index element={<Main cardsCount={cardsCount} />} />
             <Route
               path={AppRoute.Login}
               element={<Login />}
@@ -33,9 +33,7 @@ function App({cardsCount}: AppScreenProps): JSX.Element {
                 </PrivateRoute>
               }
             />
-            <Route path={AppRoute.Offer}>
-              <Route path={AppRoute.Room} element={<Room />}/>
-            </Route>
+            <Route path={AppRoute.Offer} element={<Room />} />
           </Route>
           <Route path='*' element={<PageNotFound />} />
         </Routes>

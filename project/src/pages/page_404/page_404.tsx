@@ -1,6 +1,8 @@
 import Logo from '../../components/logo/logo';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import styles from './page_404.module.css';
+import { AppRoute } from '../../const';
 
 function PageNotFound(): JSX.Element {
   return (
@@ -19,18 +21,11 @@ function PageNotFound(): JSX.Element {
           </div>
         </div>
       </header>
-      <section style={{ margin: '10%'}}>
-        <h1 style={{
-          borderLeftStyle: 'solid',
-          borderWidth: '5px',
-          borderColor: '#366CB6',
-          marginBottom: '5%',
-          padding: '15px'
-        }}
-        >
+      <section className={styles.container}>
+        <h1 className={styles.error}>
           404 Страница не найдена
         </h1>
-        <Link to="/" style={{color: '#366CB6'}}>
+        <Link to={AppRoute.Root} className={styles.back}>
           Вернуться на главную страницу
         </Link>
       </section>
