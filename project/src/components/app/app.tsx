@@ -1,4 +1,12 @@
-import StartScreen from '../../pages/start-screen/start-screen';
+import Main from '../../pages/main/main';
+import Favorites from '../../pages/favorites/favorites';
+import Login from '../../pages/login/login';
+import Room from '../../pages/room/room';
+import PageNotFound from '../../pages/page_404/page_404';
+import { AppRoute, AuthorizationStatus } from '../../const';
+import PrivateRoute from '../private-route/private-route';
+import {Route, Routes, BrowserRouter} from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 
 type AppScreenProps = {
   cardsCount: number;
@@ -6,7 +14,31 @@ type AppScreenProps = {
 
 function App({cardsCount}: AppScreenProps): JSX.Element {
   return (
-    <StartScreen cardsCount={cardsCount} />
+    <HelmetProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path={AppRoute.Root}>
+            <Route index element={<Main cardsCount={cardsCount} />} />
+            <Route
+              path={AppRoute.Login}
+              element={<Login />}
+            />
+            <Route
+              path={AppRoute.Favorites}
+              element={
+                <PrivateRoute
+                  authorizationStatus={AuthorizationStatus.Auth}
+                >
+                  <Favorites />
+                </PrivateRoute>
+              }
+            />
+            <Route path={AppRoute.Offer} element={<Room />} />
+          </Route>
+          <Route path='*' element={<PageNotFound />} />
+        </Routes>
+      </BrowserRouter>
+    </HelmetProvider>
   );
 }
 
