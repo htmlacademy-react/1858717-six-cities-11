@@ -1,9 +1,19 @@
 import Logo from '../../components/logo/logo';
+import { Offer } from '../../types/offers';
 import { AppRoute } from '../../const';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 
-function Favorites(): JSX.Element {
+type FavoritesProps = {
+  offers: Offer[];
+}
+
+function Favorites({offers}: FavoritesProps): JSX.Element {
+  const favoriteOffers = offers.filter((offer) => offer.isFavorite);
+  const uniqueCities = new Set();
+
+  favoriteOffers.forEach((offer) => uniqueCities.add(offer.city.name));
+
   return (
     <div className="page">
       <Helmet>

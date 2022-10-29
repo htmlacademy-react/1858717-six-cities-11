@@ -1,7 +1,7 @@
 import Logo from '../../components/logo/logo';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import styles from './page_404.module.css';
+import styles from './page-404.module.css';
 import { AppRoute } from '../../const';
 
 function PageNotFound(): JSX.Element {

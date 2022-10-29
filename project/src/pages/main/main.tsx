@@ -1,12 +1,13 @@
-import Card from '../../components/card/card';
+import CardsList from '../../components/cards-list/cards-list';
 import Logo from '../../components/logo/logo';
+import { Offer } from '../../types/offers';
 import { Helmet } from 'react-helmet-async';
 
 type MainProp = {
-  cardsCount: number;
+  offers: Offer[];
 };
 
-function Main({cardsCount}: MainProp): JSX.Element {
+function Main({offers}: MainProp): JSX.Element {
   return (
     <div className="page page--gray page--main">
       <Helmet>
@@ -99,9 +100,7 @@ function Main({cardsCount}: MainProp): JSX.Element {
                   <li className="places__option" tabIndex={0}>Top rated first</li>
                 </ul>
               </form>
-              <div className="cities__places-list places__list tabs__content">
-                {Array(cardsCount).fill(<Card />)}
-              </div>
+              <CardsList offers={offers} />
             </section>
             <div className="cities__right-section">
               <section className="cities__map map"></section>
