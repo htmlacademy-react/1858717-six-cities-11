@@ -3,19 +3,19 @@ import { Link, generatePath } from 'react-router-dom';
 import { AppRoute, MAX_RATING } from '../../const';
 import BookmarksButton from '../bookmarks-button/bookmarks-button';
 
-type CardProps = {
+type FavoritesItemProps = {
   offer: Offer;
   onMouseEnter: (offerId: number | null) => void;
 };
 
-function Card({offer, onMouseEnter}: CardProps): JSX.Element {
+function FavoritesItem({offer, onMouseEnter}: FavoritesItemProps): JSX.Element {
   const {isPremium, previewImage, price, title, type, rating} = offer;
   const typeOfAprt = type[0].toUpperCase() + type.slice(1);
   const ratingInPercent = (rating * 100) / MAX_RATING;
 
   return (
     <article
-      className="cities__card place-card"
+      className="favorites__card place-card"
       onMouseEnter={() => onMouseEnter(offer.id)}
       onMouseLeave={() => onMouseEnter(null)}
     >
@@ -24,18 +24,23 @@ function Card({offer, onMouseEnter}: CardProps): JSX.Element {
           <span>Premium</span>
         </div>
       )}
-      <div className="cities__image-wrapper place-card__image-wrapper">
-        <Link to={generatePath(AppRoute.Offer, { id: String(offer.id)})}>
-          <img className="place-card__image" src={previewImage} width="260" height="200" alt="Place" />
+      <div className="favorites__image-wrapper place-card__image-wrapper">
+        <Link
+          to={`${AppRoute.Root}${generatePath(AppRoute.Offer, { id: String(offer.id)})}`}
+        >
+          <img className="place-card__image" src={previewImage} width="150" height="110" alt="Place" />
         </Link>
       </div>
-      <div className="place-card__info">
+      <div className="favorites__card-info place-card__info">
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
             <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <BookmarksButton className='' size={'small'} />
+          <BookmarksButton
+            className="place-card__bookmark-button--active"
+            size={'small'}
+          />
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
@@ -54,4 +59,4 @@ function Card({offer, onMouseEnter}: CardProps): JSX.Element {
   );
 }
 
-export default Card;
+export default FavoritesItem;
