@@ -1,5 +1,4 @@
 import FavoritesItem from '../favorites-item/favorites-item';
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Offer } from '../../types/offers';
 
@@ -8,18 +7,21 @@ type FavoritesListProps = {
 }
 
 function FavoritesList({offers}: FavoritesListProps): JSX.Element {
-  const [, setActiveOffer] = useState<number | null>(null);
   const favoriteOffers = offers.filter((offer) => offer.isFavorite);
-  const uniqueCities = [...new Set(favoriteOffers.map(({city}) => city.name))];
 
-  const handleOfferMouseEnter = (offerId: number | null) => {
-    setActiveOffer(offerId);
-  };
+  const offersByCity = favoriteOffers.reduce<{ [key: string]: Offer[] }>(( acc, cur ) =>
+  {
+    if (!acc[cur.city.name]) {
+      acc[cur.city.name] = [];
+    }
+    acc[cur.city.name].push(cur);
+
+    return acc;
+  }, {});
 
   return (
     <ul className="favorites__list">
-
-      {uniqueCities.map((city) => (
+      {Object.keys(offersByCity).map((city) => (
         <li className="favorites__locations-items" key={city}>
           <div className="favorites__locations locations locations--current">
             <div className="locations__item">
@@ -29,17 +31,15 @@ function FavoritesList({offers}: FavoritesListProps): JSX.Element {
             </div>
           </div>
           <div className="favorites__places">
-            {offers.map((offer) =>
+            {offersByCity[city].map((offer) =>
               offer.city.name === city
-                &&
-                <FavoritesItem
-                  offer={offer}
-                  onMouseEnter={handleOfferMouseEnter}
-                />
+          &&
+          <FavoritesItem
+            offer={offer}
+          />
             )}
           </div>
-        </li>)
-      )}
+        </li>))}
     </ul>
   );
 }

@@ -5,10 +5,9 @@ import BookmarksButton from '../bookmarks-button/bookmarks-button';
 
 type FavoritesItemProps = {
   offer: Offer;
-  onMouseEnter: (offerId: number | null) => void;
 };
 
-function FavoritesItem({offer, onMouseEnter}: FavoritesItemProps): JSX.Element {
+function FavoritesItem({offer}: FavoritesItemProps): JSX.Element {
   const {isPremium, previewImage, price, title, type, rating} = offer;
   const typeOfAprt = type[0].toUpperCase() + type.slice(1);
   const ratingInPercent = (rating * 100) / MAX_RATING;
@@ -16,8 +15,6 @@ function FavoritesItem({offer, onMouseEnter}: FavoritesItemProps): JSX.Element {
   return (
     <article
       className="favorites__card place-card"
-      onMouseEnter={() => onMouseEnter(offer.id)}
-      onMouseLeave={() => onMouseEnter(null)}
     >
       {isPremium && (
         <div className="place-card__mark">
@@ -39,7 +36,7 @@ function FavoritesItem({offer, onMouseEnter}: FavoritesItemProps): JSX.Element {
           </div>
           <BookmarksButton
             className="place-card__bookmark-button--active"
-            size={'small'}
+            size="small"
           />
         </div>
         <div className="place-card__rating rating">

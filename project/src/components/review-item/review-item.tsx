@@ -1,12 +1,15 @@
 import { Review } from '../../types/reviews';
+import dayjs from 'dayjs';
 
 type ReviewItemProps = {
   review: Review;
-  commentDate: string;
 }
 
-function ReviewItem({ review, commentDate }: ReviewItemProps): JSX.Element {
+function ReviewItem({ review }: ReviewItemProps): JSX.Element {
   const { user } = review;
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+  const commentDate = dayjs(review.date).format('MMMM YYYY');
+
   return (
     <li className="reviews__item" key={review.id}>
       <div className="reviews__user user">
