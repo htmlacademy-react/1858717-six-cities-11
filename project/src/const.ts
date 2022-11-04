@@ -14,10 +14,10 @@ export enum AuthorizationStatus {
 
 export const MAX_RATING = 5;
 
-export const RatingTitles: {[key: string]: string} = {
-  5: 'perfect',
-  4: 'good',
-  3: 'not bad',
-  2: 'badly',
-  1: 'terribly'
-} as const;
+export const RatingTitles = [
+  {value: '5', title: 'perfect'},
+  {value: '4', title: 'good'},
+  {value: '3', title: 'not bad'},
+  {value: '2', title: 'badly'},
+  {value: '1', title: 'terribly'}
+];

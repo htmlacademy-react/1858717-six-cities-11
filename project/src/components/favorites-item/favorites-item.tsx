@@ -35,8 +35,9 @@ function FavoritesItem({offer}: FavoritesItemProps): JSX.Element {
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
           <BookmarksButton
-            className="place-card__bookmark-button--active"
+            isActive="__bookmark-button--active"
             size="small"
+            page="place-card"
           />
         </div>
         <div className="place-card__rating rating">

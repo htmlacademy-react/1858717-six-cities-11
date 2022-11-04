@@ -1,6 +1,7 @@
 type BookmarksButtonProps = {
-  className: '' | 'place-card__bookmark-button--active';
+  isActive: false | '__bookmark-button--active';
   size: 'small' | 'big';
+  page: 'place-card' | 'property';
 }
 
 const sizes = {
@@ -14,11 +15,12 @@ const sizes = {
   }
 };
 
-function BookmarksButton({className, size}: BookmarksButtonProps): JSX.Element {
+function BookmarksButton({ isActive, size, page }: BookmarksButtonProps): JSX.Element {
   const {width, height} = sizes[size];
+  const className = isActive ? `${page}${isActive}` : '';
 
   return (
-    <button className={`place-card__bookmark-button ${className} button`} type="button">
+    <button className={`${page}__bookmark-button ${className} button`} type="button">
       <svg className="place-card__bookmark-icon" width={width} height={height}>
         <use xlinkHref="#icon-bookmark"></use>
       </svg>

@@ -19,7 +19,7 @@ function Room({offers, reviews}: RoomProps): JSX.Element {
   const { id } = useParams();
   const property = offers.find((currentOffer) => currentOffer.id === Number(id));
   if (property) {
-    const {images, type, isPremium, title, rating, bedrooms, maxAdults, price, goods, host, description} = property;
+    const {images, type, isPremium, title, rating, bedrooms, maxAdults, price, goods, host, description, isFavorite} = property;
     const typeOfAprt = type[0].toUpperCase() + type.slice(1);
     const ratingInPercent = (rating * 100) / MAX_RATING;
 
@@ -46,7 +46,11 @@ function Room({offers, reviews}: RoomProps): JSX.Element {
                     <h1 className="property__name">
                       {title}
                     </h1>
-                    <BookmarksButton className='' size={'big'}/>
+                    <BookmarksButton
+                      isActive={isFavorite ? '__bookmark-button--active' : false}
+                      size="big"
+                      page="property"
+                    />
                   </div>
                   <div className="property__rating rating">
                     <div className="property__stars rating__stars">
@@ -105,8 +109,9 @@ function Room({offers, reviews}: RoomProps): JSX.Element {
                           <span className="place-card__price-text">&#47;&nbsp;night</span>
                         </div>
                         <BookmarksButton
-                          className='place-card__bookmark-button--active'
-                          size={'small'}
+                          isActive={isFavorite ? '__bookmark-button--active' : false}
+                          page="place-card"
+                          size="small"
                         />
                       </div>
                       <div className="place-card__rating rating">
@@ -134,7 +139,11 @@ function Room({offers, reviews}: RoomProps): JSX.Element {
                           <b className="place-card__price-value">&euro;132</b>
                           <span className="place-card__price-text">&#47;&nbsp;night</span>
                         </div>
-                        <BookmarksButton className='' size={'small'} />
+                        <BookmarksButton
+                          isActive={isFavorite ? '__bookmark-button--active' : false}
+                          size="small"
+                          page="place-card"
+                        />
                       </div>
                       <div className="place-card__rating rating">
                         <div className="place-card__stars rating__stars">
@@ -164,7 +173,11 @@ function Room({offers, reviews}: RoomProps): JSX.Element {
                           <b className="place-card__price-value">&euro;180</b>
                           <span className="place-card__price-text">&#47;&nbsp;night</span>
                         </div>
-                        <BookmarksButton className='' size={'small'}/>
+                        <BookmarksButton
+                          isActive={isFavorite ? '__bookmark-button--active' : false}
+                          size="small"
+                          page="place-card"
+                        />
                       </div>
                       <div className="place-card__rating rating">
                         <div className="place-card__stars rating__stars">

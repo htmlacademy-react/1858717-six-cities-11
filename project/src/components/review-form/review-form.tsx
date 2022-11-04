@@ -18,12 +18,12 @@ function ReviewForm(): JSX.Element {
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
       <div className="reviews__rating-form form__rating">
 
-        {Object.keys(RatingTitles).map((value) => (
+        {RatingTitles.map(({ value,title }) => (
           <Rating
             key={value}
             handleFieldChange={handleFieldChange}
             rating={value}
-            title={RatingTitles[value]}
+            title={title}
           />
         ))}
 

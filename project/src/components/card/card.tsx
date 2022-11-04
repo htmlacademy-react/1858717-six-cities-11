@@ -9,7 +9,7 @@ type CardProps = {
 };
 
 function Card({offer, onMouseEnter}: CardProps): JSX.Element {
-  const {isPremium, previewImage, price, title, type, rating} = offer;
+  const {isPremium, previewImage, price, title, type, rating, isFavorite} = offer;
   const typeOfAprt = type[0].toUpperCase() + type.slice(1);
   const ratingInPercent = (rating * 100) / MAX_RATING;
 
@@ -35,7 +35,11 @@ function Card({offer, onMouseEnter}: CardProps): JSX.Element {
             <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <BookmarksButton className='' size={'small'} />
+          <BookmarksButton
+            isActive={isFavorite ? '__bookmark-button--active' : false}
+            size="small"
+            page="place-card"
+          />
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
