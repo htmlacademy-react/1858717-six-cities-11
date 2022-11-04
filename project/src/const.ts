@@ -2,7 +2,8 @@ export enum AppRoute {
   Login = '/login',
   Favorites = '/favorites',
   Offer = 'offer/:id',
-  Root = '/'
+  Root = '/',
+  NotFound = '*'
 }
 
 export enum AuthorizationStatus {
@@ -10,3 +11,13 @@ export enum AuthorizationStatus {
   NoAuth = 'NO_AUTH',
   Unknow = 'UNKNOW'
 }
+
+export const MAX_RATING = 5;
+
+export const RatingTitles = [
+  {value: '5', title: 'perfect'},
+  {value: '4', title: 'good'},
+  {value: '3', title: 'not bad'},
+  {value: '2', title: 'badly'},
+  {value: '1', title: 'terribly'}
+];
