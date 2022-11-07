@@ -9,19 +9,19 @@ type MapProps = {
   className: string;
   offers: Offer[];
   city: Location;
-  selectedOffer: Offer | undefined;
+  selectedOffer: number | undefined;
 }
 
 const defaultCustomIcon = new Icon({
   iconUrl: URL_MARKER_DEFAULT,
-  iconSize: [28, 40],
-  iconAnchor: [14, 40]
+  iconSize: [27, 39],
+  iconAnchor: [13.5, 39]
 });
 
 const currentCustomIcon = new Icon({
   iconUrl: URL_MARKER_CURRENT,
-  iconSize: [28, 40],
-  iconAnchor: [14, 40]
+  iconSize: [27, 39],
+  iconAnchor: [13.5, 39]
 });
 
 function Map({className, offers, city, selectedOffer}: MapProps): JSX.Element {
@@ -39,7 +39,7 @@ function Map({className, offers, city, selectedOffer}: MapProps): JSX.Element {
 
         marker
           .setIcon(
-            selectedOffer !== undefined && offer.id === selectedOffer.id
+            selectedOffer && offer.id === selectedOffer
               ? currentCustomIcon
               : defaultCustomIcon
           )
