@@ -31,7 +31,7 @@ function Main({offers}: MainProp): JSX.Element {
                 <CardsList offers={offers} />
               </section>
               <div className="cities__right-section">
-                <Map className={'cities__map'}/>
+                <Map className={'cities__map'} offers={offers} city={offers[0].city.location} selectedOffer={undefined}/>
               </div>
             </div>
           </div>
