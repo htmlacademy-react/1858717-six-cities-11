@@ -32,8 +32,8 @@ export const offers: Offer[] = [
     isFavorite: true,
     isPremium: false,
     location: {
-      latitude: 52.35514938496378,
-      longitude: 4.673877537499948,
+      latitude: 52.3909553943508,
+      longitude: 4.85309666406198,
       zoom: 8
     },
     maxAdults: 5,
@@ -47,11 +47,11 @@ export const offers: Offer[] = [
     bedrooms: 1,
     city: {
       location: {
-        latitude: 51.892584,
-        longitude: 5.193510,
-        zoom: 7,
+        latitude: 52.370216,
+        longitude: 4.895168,
+        zoom: 10,
       },
-      name: 'Hamburg'
+      name: 'Amsterdam'
     },
     description: 'Wonderful place in the heart of Hamburg.',
     goods: [
@@ -73,9 +73,9 @@ export const offers: Offer[] = [
     isFavorite: false,
     isPremium: true,
     location: {
-      latitude: 51.35514619361378,
-      longitude: 5.673871953199948,
-      zoom: 10
+      latitude: 52.3609553943508,
+      longitude: 4.85309666406198,
+      zoom: 8
     },
     maxAdults: 2,
     previewImage: 'img/room-small.jpg',
@@ -88,11 +88,11 @@ export const offers: Offer[] = [
     bedrooms: 2,
     city: {
       location: {
-        latitude: 48.370216,
-        longitude: 3.895168,
-        zoom: 6,
+        latitude: 52.370216,
+        longitude: 4.895168,
+        zoom: 10,
       },
-      name: 'Paris'
+      name: 'Amsterdam'
     },
     description: 'A light and cozy apartment in romantic Paris.',
     goods: [
@@ -116,9 +116,9 @@ export const offers: Offer[] = [
     isFavorite: true,
     isPremium: true,
     location: {
-      latitude: 48.35514938496378,
-      longitude: 3.673877537499948,
-      zoom: 9
+      latitude: 52.3909553943508,
+      longitude: 4.929309666406198,
+      zoom: 8
     },
     maxAdults: 2,
     previewImage: 'img/apartment-small-04.jpg',
@@ -131,11 +131,11 @@ export const offers: Offer[] = [
     bedrooms: 2,
     city: {
       location: {
-        latitude: 46.370216,
-        longitude: 6.895168,
-        zoom: 7,
+        latitude: 52.370216,
+        longitude: 4.895168,
+        zoom: 10,
       },
-      name: 'Cologne'
+      name: 'Amsterdam'
     },
     description: 'Great place for family near the park',
     goods: [
@@ -159,9 +159,9 @@ export const offers: Offer[] = [
     isFavorite: false,
     isPremium: false,
     location: {
-      latitude: 46.35514938496378,
-      longitude: 6.673877537499948,
-      zoom: 5
+      latitude: 52.3809553943508,
+      longitude: 4.939309666406198,
+      zoom: 8
     },
     maxAdults: 5,
     previewImage: 'img/apartment-small-03.jpg',

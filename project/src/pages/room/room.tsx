@@ -19,7 +19,21 @@ function Room({offers, reviews}: RoomProps): JSX.Element {
   const { id } = useParams();
   const property = offers.find((currentOffer) => currentOffer.id === Number(id));
   if (property) {
-    const {images, type, isPremium, title, rating, bedrooms, maxAdults, price, goods, host, description, isFavorite} = property;
+    const {
+      images,
+      type,
+      isPremium,
+      title,
+      rating,
+      bedrooms,
+      maxAdults,
+      price,
+      goods,
+      host,
+      description,
+      isFavorite,
+      city
+    } = property;
     const typeOfAprt = type[0].toUpperCase() + type.slice(1);
     const ratingInPercent = (rating * 100) / MAX_RATING;
 
@@ -90,7 +104,7 @@ function Room({offers, reviews}: RoomProps): JSX.Element {
                   <Reviews reviews={reviews} />
                 </div>
               </div>
-              <Map className={'property__map'} />
+              <Map className="property__map" city={city.location} offers={offers} selectedOffer={property.id}/>
             </section>
             <div className="container">
               <section className="near-places places">
