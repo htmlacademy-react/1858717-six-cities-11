@@ -28,7 +28,7 @@ function Main({offers}: MainProp): JSX.Element {
                 <h2 className="visually-hidden">Places</h2>
                 <b className="places__found">312 places to stay in Amsterdam</b>
                 <SortingForm />
-                <CardsList offers={offers} />
+                <CardsList offers={offers} place="city" />
               </section>
               <div className="cities__right-section">
                 <Map className={'cities__map'} offers={offers} city={offers[0].city.location} selectedOffer={undefined}/>

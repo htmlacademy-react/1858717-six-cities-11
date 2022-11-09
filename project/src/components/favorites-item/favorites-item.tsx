@@ -47,7 +47,9 @@ function FavoritesItem({offer}: FavoritesItemProps): JSX.Element {
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={generatePath(AppRoute.Offer, { id: String(offer.id)})}>
+          <Link
+            to={`${AppRoute.Root}${generatePath(AppRoute.Offer, { id: String(offer.id)})}`}
+          >
             {title}
           </Link>
         </h2>

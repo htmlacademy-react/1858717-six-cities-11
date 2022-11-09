@@ -5,28 +5,46 @@ import BookmarksButton from '../bookmarks-button/bookmarks-button';
 
 type CardProps = {
   offer: Offer;
-  onMouseEnter: (offerId: number | null) => void;
+  handleOfferMouseEnter: (offerId: number | null) => void;
+  place: 'city' | 'near';
 };
 
-function Card({offer, onMouseEnter}: CardProps): JSX.Element {
+const classes = {
+  city: {
+    className: 'cities',
+    imgWidth: 260,
+    imgHeight: 200
+  },
+  near: {
+    className: 'near-places',
+    imgWidth: 260,
+    imgHeight: 200
+  }
+};
+
+function Card({offer, handleOfferMouseEnter, place}: CardProps): JSX.Element {
   const {isPremium, previewImage, price, title, type, rating, isFavorite} = offer;
   const typeOfAprt = type[0].toUpperCase() + type.slice(1);
   const ratingInPercent = (rating * 100) / MAX_RATING;
 
+  const { className, imgWidth, imgHeight } = classes[place];
+
   return (
     <article
-      className="cities__card place-card"
-      onMouseEnter={() => onMouseEnter(offer.id)}
-      onMouseLeave={() => onMouseEnter(null)}
+      className={`${className}__card place-card`}
+      onMouseEnter={() => handleOfferMouseEnter(offer.id)}
+      onMouseLeave={() => handleOfferMouseEnter(null)}
     >
       {isPremium && (
         <div className="place-card__mark">
           <span>Premium</span>
         </div>
       )}
-      <div className="cities__image-wrapper place-card__image-wrapper">
-        <Link to={generatePath(AppRoute.Offer, { id: String(offer.id)})}>
-          <img className="place-card__image" src={previewImage} width="260" height="200" alt="Place" />
+      <div className={`${className}__image-wrapper place-card__image-wrapper`}>
+        <Link
+          to={`${AppRoute.Root}${generatePath(AppRoute.Offer, { id: String(offer.id)})}`}
+        >
+          <img className="place-card__image" src={previewImage} width={imgWidth} height={imgHeight} alt="Place" />
         </Link>
       </div>
       <div className="place-card__info">
@@ -48,7 +66,9 @@ function Card({offer, onMouseEnter}: CardProps): JSX.Element {
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={generatePath(AppRoute.Offer, { id: String(offer.id)})}>
+          <Link
+            to={`${AppRoute.Root}${generatePath(AppRoute.Offer, { id: String(offer.id)})}`}
+          >
             {title}
           </Link>
         </h2>
