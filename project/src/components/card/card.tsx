@@ -40,9 +40,7 @@ function Card({offer, onOfferMouseEnter, place}: CardProps): JSX.Element {
       'favorites__card-info': place === 'favorite'
     });
 
-  const handleOfferMouseEnter = (offerId: number | null) => {
-    if (onOfferMouseEnter) {
-      return onOfferMouseEnter(offerId);
+  const handleOfferMouseEnter = (offerId: number | null) => onOfferMouseEnter?.(offerId);
     }
   };
 
