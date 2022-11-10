@@ -40,15 +40,11 @@ function Card({offer, onOfferMouseEnter, place}: CardProps): JSX.Element {
       'favorites__card-info': place === 'favorite'
     });
 
-  const handleOfferMouseEnter = (offerId: number | null) => onOfferMouseEnter?.(offerId);
-    }
-  };
-
   return (
     <article
       className={`${className}__card place-card`}
-      onMouseEnter={() => handleOfferMouseEnter(offer.id)}
-      onMouseLeave={() => handleOfferMouseEnter(null)}
+      onMouseEnter={() => onOfferMouseEnter?.(offer.id)}
+      onMouseLeave={() => onOfferMouseEnter?.(null)}
     >
       {isPremium && (
         <div className="place-card__mark">

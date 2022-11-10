@@ -12,7 +12,7 @@ type MainProp = {
 };
 
 function Main({offers}: MainProp): JSX.Element {
-  const [, setActiveOffer] = useState<number | null>(null);
+  const [currentOffer, setActiveOffer] = useState<number | null>(null);
   const handleOfferMouseEnter = (offerId: number | null) => {
     setActiveOffer(offerId);
   };
@@ -37,7 +37,7 @@ function Main({offers}: MainProp): JSX.Element {
                 <CardsList offers={offers} place="city" onOfferMouseEnter={handleOfferMouseEnter} />
               </section>
               <div className="cities__right-section">
-                <Map className={'cities__map'} offers={offers} city={offers[0].city.location} selectedOffer={undefined}/>
+                <Map className={'cities__map'} offers={offers} city={offers[0].city.location} selectedOffer={currentOffer}/>
               </div>
             </div>
           </div>
