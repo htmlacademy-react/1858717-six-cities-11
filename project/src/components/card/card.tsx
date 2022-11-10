@@ -2,11 +2,12 @@ import { Offer } from '../../types/offers';
 import { Link, generatePath } from 'react-router-dom';
 import { AppRoute, MAX_RATING } from '../../const';
 import BookmarksButton from '../bookmarks-button/bookmarks-button';
+import cn from 'classnames';
 
 type CardProps = {
   offer: Offer;
-  handleOfferMouseEnter: (offerId: number | null) => void;
-  place: 'city' | 'near';
+  onOfferMouseEnter?: (offerId: number | null) => void;
+  place: 'city' | 'near' | 'favorite';
 };
 
 const classes = {
@@ -19,15 +20,31 @@ const classes = {
     className: 'near-places',
     imgWidth: 260,
     imgHeight: 200
+  },
+  favorite: {
+    className: 'favorites',
+    imgWidth: 150,
+    imgHeight: 110
   }
 };
 
-function Card({offer, handleOfferMouseEnter, place}: CardProps): JSX.Element {
+function Card({offer, onOfferMouseEnter, place}: CardProps): JSX.Element {
   const {isPremium, previewImage, price, title, type, rating, isFavorite} = offer;
   const typeOfAprt = type[0].toUpperCase() + type.slice(1);
   const ratingInPercent = (rating * 100) / MAX_RATING;
 
   const { className, imgWidth, imgHeight } = classes[place];
+
+  const infoClassName = cn('place-card__info',
+    {
+      'favorites__card-info': place === 'favorite'
+    });
+
+  const handleOfferMouseEnter = (offerId: number | null) => {
+    if (onOfferMouseEnter) {
+      return onOfferMouseEnter(offerId);
+    }
+  };
 
   return (
     <article
@@ -47,7 +64,7 @@ function Card({offer, handleOfferMouseEnter, place}: CardProps): JSX.Element {
           <img className="place-card__image" src={previewImage} width={imgWidth} height={imgHeight} alt="Place" />
         </Link>
       </div>
-      <div className="place-card__info">
+      <div className={infoClassName}>
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
             <b className="place-card__price-value">&euro;{price}</b>

@@ -38,7 +38,7 @@ function Room({offers, reviews}: RoomProps): JSX.Element {
     } = property;
     const typeOfAprt = type[0].toUpperCase() + type.slice(1);
     const ratingInPercent = (rating * 100) / MAX_RATING;
-    const nearPlaces = offers.filter((offer) => offer.id !== property.id);
+    const nearPlaces = offers.filter((offer) => offer.id !== property.id).slice(0, 3);
 
     return (
       <div className="page">
@@ -112,7 +112,7 @@ function Room({offers, reviews}: RoomProps): JSX.Element {
             <div className="container">
               <section className="near-places places">
                 <h2 className="near-places__title">Other places in the neighbourhood</h2>
-                {nearPlaces && <CardsList offers={nearPlaces} place="near" />}
+                {nearPlaces.length > 0 && <CardsList offers={nearPlaces} place="near" />}
               </section>
             </div>
           </main>

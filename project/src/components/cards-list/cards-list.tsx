@@ -1,10 +1,10 @@
-import { useState } from 'react';
 import Card from '../card/card';
 import { Offer } from '../../types/offers';
 
 type CardListProps = {
   offers: Offer[];
   place: 'city' | 'near';
+  onOfferMouseEnter?: (offerId: number | null) => void;
 };
 
 const classes = {
@@ -12,12 +12,7 @@ const classes = {
   near: 'near-places__list'
 };
 
-function CardsList({ offers, place }: CardListProps): JSX.Element {
-  const [, setActiveOffer] = useState<number | null>(null);
-
-  const handleOfferMouseEnter = (offerId: number | null) => {
-    setActiveOffer(offerId);
-  };
+function CardsList({ offers, place, onOfferMouseEnter }: CardListProps): JSX.Element {
 
   const className = classes[place];
 
@@ -27,7 +22,7 @@ function CardsList({ offers, place }: CardListProps): JSX.Element {
         <Card
           offer={offer}
           key={offer.id}
-          handleOfferMouseEnter={handleOfferMouseEnter}
+          onOfferMouseEnter={onOfferMouseEnter}
           place={place}
         />
       ))}

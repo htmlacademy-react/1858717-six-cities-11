@@ -5,12 +5,18 @@ import CitiesMenu from '../../components/cities-menu/cities-menu';
 import SortingForm from '../../components/sorting-form/sorting-form';
 import { Offer } from '../../types/offers';
 import { Helmet } from 'react-helmet-async';
+import { useState } from 'react';
 
 type MainProp = {
   offers: Offer[];
 };
 
 function Main({offers}: MainProp): JSX.Element {
+  const [, setActiveOffer] = useState<number | null>(null);
+  const handleOfferMouseEnter = (offerId: number | null) => {
+    setActiveOffer(offerId);
+  };
+
   return (
     <div className="page page--gray page--main">
       <Helmet>
@@ -28,7 +34,7 @@ function Main({offers}: MainProp): JSX.Element {
                 <h2 className="visually-hidden">Places</h2>
                 <b className="places__found">312 places to stay in Amsterdam</b>
                 <SortingForm />
-                <CardsList offers={offers} place="city" />
+                <CardsList offers={offers} place="city" onOfferMouseEnter={handleOfferMouseEnter} />
               </section>
               <div className="cities__right-section">
                 <Map className={'cities__map'} offers={offers} city={offers[0].city.location} selectedOffer={undefined}/>
