@@ -2,34 +2,63 @@ import { Offer } from '../../types/offers';
 import { Link, generatePath } from 'react-router-dom';
 import { AppRoute, MAX_RATING } from '../../const';
 import BookmarksButton from '../bookmarks-button/bookmarks-button';
+import cn from 'classnames';
 
 type CardProps = {
   offer: Offer;
-  onMouseEnter: (offerId: number | null) => void;
+  onOfferMouseEnter?: (offerId: number | null) => void;
+  place: 'city' | 'near' | 'favorite';
 };
 
-function Card({offer, onMouseEnter}: CardProps): JSX.Element {
+const classes = {
+  city: {
+    className: 'cities',
+    imgWidth: 260,
+    imgHeight: 200
+  },
+  near: {
+    className: 'near-places',
+    imgWidth: 260,
+    imgHeight: 200
+  },
+  favorite: {
+    className: 'favorites',
+    imgWidth: 150,
+    imgHeight: 110
+  }
+};
+
+function Card({offer, onOfferMouseEnter, place}: CardProps): JSX.Element {
   const {isPremium, previewImage, price, title, type, rating, isFavorite} = offer;
   const typeOfAprt = type[0].toUpperCase() + type.slice(1);
   const ratingInPercent = (rating * 100) / MAX_RATING;
 
+  const { className, imgWidth, imgHeight } = classes[place];
+
+  const infoClassName = cn('place-card__info',
+    {
+      'favorites__card-info': place === 'favorite'
+    });
+
   return (
     <article
-      className="cities__card place-card"
-      onMouseEnter={() => onMouseEnter(offer.id)}
-      onMouseLeave={() => onMouseEnter(null)}
+      className={`${className}__card place-card`}
+      onMouseEnter={() => onOfferMouseEnter?.(offer.id)}
+      onMouseLeave={() => onOfferMouseEnter?.(null)}
     >
       {isPremium && (
         <div className="place-card__mark">
           <span>Premium</span>
         </div>
       )}
-      <div className="cities__image-wrapper place-card__image-wrapper">
-        <Link to={generatePath(AppRoute.Offer, { id: String(offer.id)})}>
-          <img className="place-card__image" src={previewImage} width="260" height="200" alt="Place" />
+      <div className={`${className}__image-wrapper place-card__image-wrapper`}>
+        <Link
+          to={`${AppRoute.Root}${generatePath(AppRoute.Offer, { id: String(offer.id)})}`}
+        >
+          <img className="place-card__image" src={previewImage} width={imgWidth} height={imgHeight} alt="Place" />
         </Link>
       </div>
-      <div className="place-card__info">
+      <div className={infoClassName}>
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
             <b className="place-card__price-value">&euro;{price}</b>
@@ -48,7 +77,9 @@ function Card({offer, onMouseEnter}: CardProps): JSX.Element {
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={generatePath(AppRoute.Offer, { id: String(offer.id)})}>
+          <Link
+            to={`${AppRoute.Root}${generatePath(AppRoute.Offer, { id: String(offer.id)})}`}
+          >
             {title}
           </Link>
         </h2>
