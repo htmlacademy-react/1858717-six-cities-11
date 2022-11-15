@@ -51,8 +51,9 @@ function Map({className, offers, city, selectedOffer}: MapProps): JSX.Element {
           );
 
         layer.addLayer(marker);
-        layer.addTo(map);
       });
+
+      layer.addTo(map);
     }
 
     return () => {layer.clearLayers();};
