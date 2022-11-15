@@ -169,5 +169,47 @@ export const offers: Offer[] = [
     rating: 3.3,
     title: 'Apartment for a big family.',
     type: 'apartment'
+  },
+  {
+    bedrooms: 1,
+    city: {
+      location: {
+        latitude: 48.8534100,
+        longitude: 2.3488000,
+        zoom: 10,
+      },
+      name: 'Paris'
+    },
+    description: 'Super place in Paris',
+    goods: [
+      'Heating',
+      'Coffee machine',
+      'Baby seat',
+      'Towels'
+    ],
+    host: {
+      avatarUrl: 'img/avatar-angelina.jpg',
+      id: 3,
+      isPro: true,
+      name: 'Angelina',
+    },
+    id: 10,
+    images: [
+      'img/apartment-01.jpg',
+      'img/apartment-02.jpg'
+    ],
+    isFavorite: true,
+    isPremium: false,
+    location: {
+      latitude: 48.8534100,
+      longitude: 2.3488000,
+      zoom: 8
+    },
+    maxAdults: 5,
+    previewImage: 'img/apartment-small-03.jpg',
+    price: 160,
+    rating: 4.2,
+    title: 'Super apartment',
+    type: 'apartment'
   }
 ];

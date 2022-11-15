@@ -9,6 +9,7 @@ import { Helmet } from 'react-helmet-async';
 import { Offer } from '../../types/offers';
 import { Review } from '../../types/reviews';
 import { useParams, Navigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import { AppRoute, MAX_RATING } from '../../const';
 
 type RoomProps = {
@@ -19,6 +20,10 @@ type RoomProps = {
 function Room({offers, reviews}: RoomProps): JSX.Element {
   const { id } = useParams();
   const property = offers.find((currentOffer) => currentOffer.id === Number(id));
+
+  useEffect(()=> {
+    window.scrollTo(0, 0);
+  }, [id]);
 
   if (property) {
     const {

@@ -29,6 +29,10 @@ function Map({className, offers, city, selectedOffer}: MapProps): JSX.Element {
   const map = useMap(mapRef, city);
 
   useEffect(() => {
+    map?.setView([city.latitude, city.longitude], city.zoom);
+  }, [city, map]);
+
+  useEffect(() => {
     if (map) {
       offers.forEach((offer) => {
         const { location } = offer;
@@ -46,7 +50,7 @@ function Map({className, offers, city, selectedOffer}: MapProps): JSX.Element {
           .addTo(map);
       });
     }
-  }, [map, offers, selectedOffer]);
+  });
 
   return (
     <section
