@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
 import { CITIES, AppRoute } from '../../const';
-import { useAppDispatch } from '../../hooks/index';
+import { useAppDispatch } from '../../hooks';
 import { changeCity } from '../../store/action';
+import cn from 'classnames';
 
 type CitiesProps = {
   currentCity: string;
@@ -19,14 +20,17 @@ function CitiesMenu({currentCity}: CitiesProps):JSX.Element {
       <section className="locations container">
         <ul className="locations__list tabs__list">
           {CITIES.map((city) => {
-            const activeClass = city === currentCity ? 'tabs__item--active' : '';
+            const className = cn('locations__item-link tabs__item',
+              {
+                'tabs__item--active': city === currentCity
+              });
 
             return (
               <li className="locations__item" key={city}>
                 <Link
-                  className={`locations__item-link tabs__item ${activeClass}`}
+                  className={className}
                   to={AppRoute.Root}
-                  onClick={()=> handleCityClick(city)}
+                  onClick={() => handleCityClick(city)}
                 >
                   <span>{city}</span>
                 </Link>

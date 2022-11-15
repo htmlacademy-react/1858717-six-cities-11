@@ -10,14 +10,14 @@ import { getOffersByCity } from '../../offer';
 
 function Main(): JSX.Element {
   const [currentOffer, setActiveOffer] = useState<number | null>(null);
-  const handleOfferMouseEnter = (offerId: number | null) => {
-    setActiveOffer(offerId);
-  };
-
   const currentCity = useAppSelector((state) => state.city);
   const offers = useAppSelector((state) => state.offers);
 
   const offersByCity = getOffersByCity(currentCity, offers);
+
+  const handleOfferMouseEnter = (offerId: number | null) => {
+    setActiveOffer(offerId);
+  };
 
   return (
     <div className="page page--gray page--main">
@@ -35,7 +35,7 @@ function Main(): JSX.Element {
               <section className="cities__places places">
                 <h2 className="visually-hidden">Places</h2>
                 <b className="places__found">
-                  {`${offersByCity.length} places to stay in ${currentCity}`}
+                  {offersByCity.length} places to stay in {currentCity}
                 </b>
                 <SortingForm />
                 <CardsList offers={offersByCity} place="city" onOfferMouseEnter={handleOfferMouseEnter} />
