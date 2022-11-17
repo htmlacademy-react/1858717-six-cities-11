@@ -1,21 +1,19 @@
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { SortType } from '../../const';
 import { changeSortType } from '../../store/action';
-import { useState, useRef } from 'react';
+import { useState, useRef} from 'react';
 import { useOnClickOutside } from 'usehooks-ts';
 import cn from 'classnames';
 
 function SortingForm(): JSX.Element {
-  const [isOptionsOpen, setOptionsView] = useState<boolean>(false);
+  const [open, setOpen] = useState(false);
   const ref = useRef(null);
 
   const dispatch = useAppDispatch();
   const currentSortType = useAppSelector((state) => state.sortType);
 
   const closeOptions = () => {
-    if (isOptionsOpen) {
-      setOptionsView(false);
-    }
+    setOpen(false);
   };
 
   const handleSortingClick = (sortType: SortType) => {
@@ -24,34 +22,30 @@ function SortingForm(): JSX.Element {
   };
 
   const handleOptionsClick = () => {
-    if (!isOptionsOpen) {
-      setOptionsView(true);
-      return;
-    }
-    closeOptions();
+    setOpen(!open);
   };
 
   useOnClickOutside(ref, closeOptions);
 
   const optionsClassName = cn('places__options places__options--custom',
     {
-      'places__options--opened': isOptionsOpen
+      'places__options--opened': open
     });
 
   return (
-    <form className="places__sorting" action="#" method="get">
+    <form className="places__sorting" action="#" method="get" ref={ref}>
       <span className="places__sorting-caption">Sort by</span>
       <span
         className="places__sorting-type"
         tabIndex={0}
-        onClick={()=> {handleOptionsClick();}}
+        onClick={handleOptionsClick}
       >
         {currentSortType}
         <svg className="places__sorting-arrow" width="7" height="4">
           <use xlinkHref="#icon-arrow-select"></use>
         </svg>
       </span>
-      <ul className={optionsClassName} ref={ref}>
+      <ul className={optionsClassName}>
         {Object.values(SortType).map((value: SortType) => {
           const className = cn('places__option',
             {
@@ -62,7 +56,7 @@ function SortingForm(): JSX.Element {
             <li
               className={className}
               tabIndex={0}
-              onClick={() => {handleSortingClick(value);}}
+              onClick={() => handleSortingClick(value)}
               key={value}
             >
               {value}
