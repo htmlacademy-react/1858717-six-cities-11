@@ -1,8 +1,8 @@
-import { Link } from 'react-router-dom';
-import { CITIES, AppRoute } from '../../const';
+import { CITIES} from '../../const';
 import { useAppDispatch } from '../../hooks';
 import { changeCity } from '../../store/action';
 import cn from 'classnames';
+import { SyntheticEvent } from 'react';
 
 type CitiesProps = {
   currentCity: string;
@@ -27,13 +27,16 @@ function CitiesMenu({currentCity}: CitiesProps):JSX.Element {
 
             return (
               <li className="locations__item" key={city}>
-                <Link
+                <a
                   className={className}
-                  to={AppRoute.Root}
-                  onClick={() => handleCityClick(city)}
+                  href="/#"
+                  onClick={(evt: SyntheticEvent) => {
+                    evt.preventDefault();
+                    handleCityClick(city);
+                  }}
                 >
                   <span>{city}</span>
-                </Link>
+                </a>
               </li>
             );
           })}

@@ -5,15 +5,19 @@ import CitiesMenu from '../../components/cities-menu/cities-menu';
 import SortingForm from '../../components/sorting-form/sorting-form';
 import { Helmet } from 'react-helmet-async';
 import { useState } from 'react';
-import { useAppSelector } from '../../hooks/index';
-import { getOffersByCity } from '../../offer';
+import { useAppSelector } from '../../hooks';
+import { getOffersByCity, getSortedOffers } from '../../offer';
+
 
 function Main(): JSX.Element {
   const [currentOffer, setActiveOffer] = useState<number | null>(null);
   const currentCity = useAppSelector((state) => state.city);
   const offers = useAppSelector((state) => state.offers);
+  const sortType = useAppSelector((state) => state.sortType);
 
   const offersByCity = getOffersByCity(currentCity, offers);
+
+  const sortedOffers = getSortedOffers(offersByCity, sortType);
 
   const handleOfferMouseEnter = (offerId: number | null) => {
     setActiveOffer(offerId);
@@ -38,7 +42,7 @@ function Main(): JSX.Element {
                   {offersByCity.length} places to stay in {currentCity}
                 </b>
                 <SortingForm />
-                <CardsList offers={offersByCity} place="city" onOfferMouseEnter={handleOfferMouseEnter} />
+                <CardsList offers={sortedOffers} place="city" onOfferMouseEnter={handleOfferMouseEnter} />
               </section>
               <div className="cities__right-section">
                 <Map className={'cities__map'} offers={offersByCity} city={offersByCity[0].city.location} selectedOffer={currentOffer} />

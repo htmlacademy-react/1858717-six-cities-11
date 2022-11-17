@@ -29,3 +29,10 @@ export const URL_MARKER_CURRENT = '/img/pin-active.svg';
 export const CITIES = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
 
 export const INITIAL_CITY = 'Paris';
+
+export enum SortType {
+  Default = 'Popular',
+  Ascending = 'Price: low to high',
+  Descending = 'Price: high to low',
+  TopRated = 'Top rated first'
+}
