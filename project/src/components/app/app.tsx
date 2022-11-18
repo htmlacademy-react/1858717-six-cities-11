@@ -4,18 +4,26 @@ import Login from '../../pages/login/login';
 import Room from '../../pages/room/room';
 import PageNotFound from '../../pages/page-404/page-404';
 import { AppRoute, AuthorizationStatus } from '../../const';
-import { Offer } from '../../types/offers';
 import { Review } from '../../types/reviews';
 import PrivateRoute from '../private-route/private-route';
 import { Route, Routes, BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
+import {useAppSelector} from '../../hooks';
+import LoadingScreen from '../../pages/loading-screen/loading-screen';
 
 type AppScreenProps = {
-  offers: Offer[];
   reviews: Review[];
 };
 
-function App({offers, reviews}: AppScreenProps): JSX.Element {
+function App({reviews}: AppScreenProps): JSX.Element {
+  const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
+
+  if(isOffersDataLoading) {
+    return (
+      <LoadingScreen />
+    );
+  }
+
   return (
     <HelmetProvider>
       <BrowserRouter>
@@ -32,11 +40,11 @@ function App({offers, reviews}: AppScreenProps): JSX.Element {
                 <PrivateRoute
                   authorizationStatus={AuthorizationStatus.Auth}
                 >
-                  <Favorites offers={offers}/>
+                  <Favorites />
                 </PrivateRoute>
               }
             />
-            <Route path={AppRoute.Offer} element={<Room offers={offers} reviews={reviews}/>} />
+            <Route path={AppRoute.Offer} element={<Room reviews={reviews}/>} />
           </Route>
           <Route path={AppRoute.NotFound} element={<PageNotFound />} />
         </Routes>

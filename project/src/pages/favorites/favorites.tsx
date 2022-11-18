@@ -1,14 +1,13 @@
 import Logo from '../../components/logo/logo';
-import { Offer } from '../../types/offers';
 import { Helmet } from 'react-helmet-async';
 import FavoritesList from '../../components/favorites-list/favorites-list';
 import Layout from '../../components/layout/layout';
+import { useAppSelector } from '../../hooks';
 
-type FavoritesProps = {
-  offers: Offer[];
-}
 
-function Favorites({offers}: FavoritesProps): JSX.Element {
+function Favorites(): JSX.Element {
+  const offers = useAppSelector((state) => state.offers);
+
   return (
     <div className="page">
       <Helmet>
