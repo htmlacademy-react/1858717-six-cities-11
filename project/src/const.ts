@@ -36,3 +36,14 @@ export enum SortType {
   Descending = 'Price: high to low',
   TopRated = 'Top rated first'
 }
+
+export enum APIRoute {
+  Hotels = '/hotels',
+  Nearby = '/nearby',
+  Favorites = '/favorite',
+  Comments = '/comments',
+  Login = '/login',
+  Logout = '/logout'
+}
+
+export const TIMEOUT_SNOW_ERROR = 2000;

@@ -6,19 +6,19 @@ import Reviews from '../../components/reviews/reviews';
 import HostInfo from '../../components/host/host';
 import CardsList from '../../components/cards-list/cards-list';
 import { Helmet } from 'react-helmet-async';
-import { Offer } from '../../types/offers';
 import { Review } from '../../types/reviews';
 import { useParams, Navigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { AppRoute, MAX_RATING } from '../../const';
+import { useAppSelector } from '../../hooks';
 
 type RoomProps = {
-  offers: Offer[];
   reviews: Review[];
 };
 
-function Room({offers, reviews}: RoomProps): JSX.Element {
+function Room({reviews}: RoomProps): JSX.Element {
   const { id } = useParams();
+  const offers = useAppSelector((state) => state.offers);
   const property = offers.find((currentOffer) => currentOffer.id === Number(id));
 
   useEffect(()=> {
