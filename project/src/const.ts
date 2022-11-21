@@ -46,4 +46,3 @@ export enum APIRoute {
   Logout = '/logout'
 }
 
-export const TIMEOUT_SNOW_ERROR = 2000;

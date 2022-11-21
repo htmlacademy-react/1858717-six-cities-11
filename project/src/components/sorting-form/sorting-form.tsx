@@ -40,7 +40,7 @@ function SortingForm(): JSX.Element {
         tabIndex={0}
         onClick={handleOptionsClick}
       >
-        {currentSortType}
+        {`${currentSortType}`}
         <svg className="places__sorting-arrow" width="7" height="4">
           <use xlinkHref="#icon-arrow-select"></use>
         </svg>
