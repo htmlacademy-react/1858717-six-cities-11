@@ -30,7 +30,7 @@ function Main(): JSX.Element {
           6 cities
         </title>
       </Helmet>
-      <Layout>
+      <Layout isLoginScreen={false}>
         <main className="page__main page__main--index">
           <h1 className="visually-hidden">Cities</h1>
           <CitiesMenu currentCity={currentCity}/>

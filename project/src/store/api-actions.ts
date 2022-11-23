@@ -47,10 +47,12 @@ export const loginAction = createAsyncThunk<void, AuthData, {
   'user/login',
   async({email, password}, {dispatch, extra: api}) => {
     const {data} = await api.post<UserData>(APIRoute.Login, {email, password});
+    dispatch(setOffersDataLoadingStatus(true));
     saveToken(data.token);
     dispatch(requireAuthorization(AuthorizationStatus.Auth));
     dispatch(setUser(data));
-    dispatch(redirectToRoute(AppRoute.Favorites));
+    dispatch(redirectToRoute(AppRoute.Root));
+    dispatch(setOffersDataLoadingStatus(false));
   }
 );
 

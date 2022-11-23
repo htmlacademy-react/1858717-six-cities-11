@@ -9,7 +9,7 @@ import PrivateRoute from '../private-route/private-route';
 import { Route, Routes } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import {useAppSelector} from '../../hooks';
-import LoadingScreen from '../../pages/loading-screen/loading-screen';
+import Spinner from '../spinner/spinner';
 import HistoryRouter from '../history-router/history-router';
 import browserHistory from '../../browser-history';
 
@@ -23,7 +23,7 @@ function App({reviews}: AppScreenProps): JSX.Element {
 
   if(authorizationStatus === AuthorizationStatus.Unknow || isOffersDataLoading) {
     return (
-      <LoadingScreen />
+      <Spinner size="big"/>
     );
   }
 
