@@ -20,7 +20,7 @@ function Login(): JSX.Element {
           6 cities|Login
         </title>
       </Helmet>
-      <Layout isLoginScreen>
+      <Layout hasNavigation={false}>
 
         <main className="page__main page__main--login">
           <div className="page__login-container container">

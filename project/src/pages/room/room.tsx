@@ -52,7 +52,7 @@ function Room({reviews}: RoomProps): JSX.Element {
           6 cities|Property
           </title>
         </Helmet>
-        <Layout isLoginScreen={false}>
+        <Layout>
           <main className="page__main page__main--property">
             <section className="property">
               <PropertyGallery images={images} type={type}/>

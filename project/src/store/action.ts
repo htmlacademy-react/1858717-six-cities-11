@@ -16,6 +16,8 @@ export const loadFavorites = createAction<Offer[]>('data/loadFavorites');
 
 export const setOffersDataLoadingStatus = createAction<boolean>('data/setOffersDataLoadingStatus');
 
+export const setLoginDataLoadingStatus = createAction<boolean>('user/setLoginDataLoadingStatus');
+
 export const requireAuthorization = createAction<AuthorizationStatus>('user/requireAuthorization');
 
 export const redirectToRoute = createAction<AppRoute>('offer/redirectToRoute');

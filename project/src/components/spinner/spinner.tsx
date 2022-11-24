@@ -11,7 +11,7 @@ const sizes = {
 
 function Spinner({size}: SpinnerProps): JSX.Element {
   return (
-    <SpinnerDotted color="#366CB6" style={{margin: '20em 35em'}} size={sizes[size]}/>
+    <SpinnerDotted color="#366CB6" size={sizes[size]}/>
   );
 }
 

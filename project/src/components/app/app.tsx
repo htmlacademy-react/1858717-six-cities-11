@@ -9,9 +9,9 @@ import PrivateRoute from '../private-route/private-route';
 import { Route, Routes } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import {useAppSelector} from '../../hooks';
-import Spinner from '../spinner/spinner';
 import HistoryRouter from '../history-router/history-router';
 import browserHistory from '../../browser-history';
+import { FullPageSpinner } from '../fullpage-spinner/fullpage-spinner';
 
 type AppScreenProps = {
   reviews: Review[];
@@ -23,7 +23,7 @@ function App({reviews}: AppScreenProps): JSX.Element {
 
   if(authorizationStatus === AuthorizationStatus.Unknow || isOffersDataLoading) {
     return (
-      <Spinner size="big"/>
+      <FullPageSpinner size="big"/>
     );
   }
 

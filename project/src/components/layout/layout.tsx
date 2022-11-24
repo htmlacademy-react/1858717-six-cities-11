@@ -3,11 +3,11 @@ import Navigation from '../navigation/navigation';
 import { ReactNode } from 'react';
 
 type LayoutProps = {
-  isLoginScreen: boolean;
+  hasNavigation?: boolean;
   children: ReactNode;
 }
 
-function Layout({children, isLoginScreen}: LayoutProps): JSX.Element {
+function Layout({children, hasNavigation = true}: LayoutProps): JSX.Element {
   return (
     <>
       <header className="header">
@@ -16,7 +16,7 @@ function Layout({children, isLoginScreen}: LayoutProps): JSX.Element {
             <div className="header__left">
               <Logo type="header"/>
             </div>
-            {!isLoginScreen && <Navigation />}
+            {hasNavigation && <Navigation />}
           </div>
         </div>
       </header>
