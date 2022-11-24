@@ -3,10 +3,11 @@ import Navigation from '../navigation/navigation';
 import { ReactNode } from 'react';
 
 type LayoutProps = {
+  hasNavigation?: boolean;
   children: ReactNode;
 }
 
-function Layout({children}: LayoutProps): JSX.Element {
+function Layout({children, hasNavigation = true}: LayoutProps): JSX.Element {
   return (
     <>
       <header className="header">
@@ -15,7 +16,7 @@ function Layout({children}: LayoutProps): JSX.Element {
             <div className="header__left">
               <Logo type="header"/>
             </div>
-            <Navigation />
+            {hasNavigation && <Navigation />}
           </div>
         </div>
       </header>

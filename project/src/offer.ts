@@ -1,4 +1,4 @@
-import { SortType } from './const';
+import { SortType, CITIES } from './const';
 import { Offer } from './types/offers';
 
 export const getOffersByCity = (city: string, offers: Offer[]) =>
@@ -25,4 +25,10 @@ export const getSortedOffers = (offers: Offer[], sortType: string) => {
     default:
       throw new Error('Unknown sorting type');
   }
+};
+
+export const getRandomCity = () => {
+  const randomIndex = Math.floor(Math.random() * CITIES.length);
+
+  return CITIES[randomIndex];
 };
