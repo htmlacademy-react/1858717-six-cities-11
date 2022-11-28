@@ -11,6 +11,7 @@ import { useParams, Navigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { AppRoute, MAX_RATING } from '../../const';
 import { useAppSelector } from '../../hooks';
+import { getOffers } from '../../store/offers-data/selectors';
 
 type RoomProps = {
   reviews: Review[];
@@ -18,7 +19,7 @@ type RoomProps = {
 
 function Room({reviews}: RoomProps): JSX.Element {
   const { id } = useParams();
-  const offers = useAppSelector((state) => state.offers);
+  const offers = useAppSelector(getOffers);
   const property = offers.find((currentOffer) => currentOffer.id === Number(id));
 
   useEffect(()=> {

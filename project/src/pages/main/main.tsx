@@ -7,13 +7,15 @@ import { Helmet } from 'react-helmet-async';
 import { useState } from 'react';
 import { useAppSelector } from '../../hooks';
 import { getOffersByCity, getSortedOffers } from '../../offer';
+import { getCity, getSortType } from '../../store/offers-process/selectors';
+import { getOffers } from '../../store/offers-data/selectors';
 
 
 function Main(): JSX.Element {
   const [currentOffer, setActiveOffer] = useState<number | null>(null);
-  const currentCity = useAppSelector((state) => state.city);
-  const offers = useAppSelector((state) => state.offers);
-  const sortType = useAppSelector((state) => state.sortType);
+  const currentCity = useAppSelector(getCity);
+  const offers = useAppSelector(getOffers);
+  const sortType = useAppSelector(getSortType);
 
   const offersByCity = getOffersByCity(currentCity, offers);
 

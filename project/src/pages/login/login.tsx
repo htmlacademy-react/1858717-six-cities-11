@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { getRandomCity } from '../../offer';
-import { changeCity } from '../../store/action';
+import { changeCity } from '../../store/offers-process/offers-process';
 import Layout from '../../components/layout/layout';
 import LoginForm from '../../components/login-form/login-form';
 

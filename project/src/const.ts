@@ -46,3 +46,8 @@ export enum APIRoute {
   Logout = '/logout'
 }
 
+export enum NameSpace {
+  Data = 'DATA',
+  Offer = 'OFFER',
+  User = 'USER'
+}
