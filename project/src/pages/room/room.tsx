@@ -11,7 +11,7 @@ import { useParams, Navigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { AppRoute, MAX_RATING } from '../../const';
 import { useAppSelector } from '../../hooks';
-import { getOffers } from '../../store/offers-data/selectors';
+import { getOffers } from '../../store/offers/selectors';
 
 type RoomProps = {
   reviews: Review[];

@@ -3,13 +3,13 @@ import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { logoutAction } from '../../store/api-actions';
-import { getFavoriteOffers } from '../../store/offers-data/selectors';
-import { getUser } from '../../store/user-process/selectors';
+import { getFavorites } from '../../store/favorites/selectors';
+import { getUser } from '../../store/user/selectors';
 
 function Navigation(): JSX.Element {
   const dispatch = useAppDispatch();
   const user = useAppSelector(getUser);
-  const favoritesCount = useAppSelector(getFavoriteOffers).length;
+  const favoritesCount = useAppSelector(getFavorites).length;
 
 
   const handleSignClick = (evt: MouseEvent) => {

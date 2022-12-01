@@ -47,7 +47,16 @@ export enum APIRoute {
 }
 
 export enum NameSpace {
-  Data = 'DATA',
+  Ui = 'UI',
   Offer = 'OFFER',
-  User = 'USER'
+  User = 'USER',
+  Comments ='COMMENTS',
+  Favorites ='FAVORITES'
+}
+
+export enum FetchStatus {
+  Idle = 'Idle',
+  Pending = 'Pending',
+  Success = 'Success',
+  Error = 'Error'
 }

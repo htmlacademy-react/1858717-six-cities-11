@@ -7,13 +7,13 @@ export default function ErrorScreen(): JSX.Element {
 
   return (
     <div className={styles.container}>
-      <p className={styles.errorText}> Не удалось загрузить предложения аренды :( </p>
+      <p className={styles.errorText}> Something went wrong. Please try again </p>
       <button className={styles.replay}
         onClick={() => {
           dispatch(fetchOffersAction());
         }}
       >
-        Попробовать еще раз
+        <span className={styles.btnText}> Try again </span>
       </button>
     </div>
   );

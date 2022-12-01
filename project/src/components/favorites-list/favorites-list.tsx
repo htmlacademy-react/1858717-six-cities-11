@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useAppSelector } from '../../hooks';
-import { getOffers } from '../../store/offers-data/selectors';
+import { getOffers } from '../../store/offers/selectors';
 import { Offer } from '../../types/offers';
 import Card from '../card/card';
 

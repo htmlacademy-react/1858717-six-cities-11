@@ -5,7 +5,8 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { loginAction } from '../../store/api-actions';
 import Spinner from '../spinner/spinner';
 import styles from './login-form.module.css';
-import { getLoginLoadingStatus } from '../../store/user-process/selectors';
+import { getLoginFetchStatus } from '../../store/user/selectors';
+import { FetchStatus } from '../../const';
 
 const formFields = {
   email: 'E-mail',
@@ -39,7 +40,8 @@ function LoginForm(): JSX.Element {
     }
   });
 
-  const isLoading = useAppSelector(getLoginLoadingStatus);
+  const fetchStatus = useAppSelector(getLoginFetchStatus);
+  const isLoading = fetchStatus === FetchStatus.Pending;
   const dispatch = useAppDispatch();
 
   const handleInputChange = ({ target }: ChangeEvent<HTMLInputElement>) => {

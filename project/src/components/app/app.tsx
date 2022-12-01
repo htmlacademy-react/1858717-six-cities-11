@@ -3,7 +3,7 @@ import Favorites from '../../pages/favorites/favorites';
 import Login from '../../pages/login/login';
 import Room from '../../pages/room/room';
 import PageNotFound from '../../pages/page-404/page-404';
-import { AppRoute, AuthorizationStatus } from '../../const';
+import { AppRoute, AuthorizationStatus, FetchStatus } from '../../const';
 import { Review } from '../../types/reviews';
 import PrivateRoute from '../private-route/private-route';
 import { Route, Routes } from 'react-router-dom';
@@ -12,8 +12,8 @@ import {useAppSelector} from '../../hooks';
 import HistoryRouter from '../history-router/history-router';
 import browserHistory from '../../browser-history';
 import { FullPageSpinner } from '../fullpage-spinner/fullpage-spinner';
-import { getAuthorizationStatus } from '../../store/user-process/selectors';
-import { getErrorStatus, getOffersLoadingStatus } from '../../store/offers-data/selectors';
+import { getAuthorizationStatus } from '../../store/user/selectors';
+import { getOffersFetchStatus } from '../../store/offers/selectors';
 import ErrorScreen from '../../pages/error-screen/error-screen';
 
 type AppScreenProps = {
@@ -22,16 +22,15 @@ type AppScreenProps = {
 
 function App({reviews}: AppScreenProps): JSX.Element {
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
-  const isOffersDataLoading = useAppSelector(getOffersLoadingStatus);
-  const hasError = useAppSelector(getErrorStatus);
+  const offersFetchStatus = useAppSelector(getOffersFetchStatus);
 
-  if(authorizationStatus === AuthorizationStatus.Unknow || isOffersDataLoading) {
+  if(authorizationStatus === AuthorizationStatus.Unknow || offersFetchStatus === FetchStatus.Pending) {
     return (
       <FullPageSpinner size="big"/>
     );
   }
 
-  if(hasError) {
+  if(offersFetchStatus === FetchStatus.Error) {
     return (
       <ErrorScreen />
     );

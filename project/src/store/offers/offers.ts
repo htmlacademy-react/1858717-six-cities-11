@@ -1,40 +1,42 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { NameSpace } from '../../const';
-import { OffersData } from '../../types/state';
+import { FetchStatus, NameSpace } from '../../const';
+import { Offer } from '../../types/offers';
 import { fetchOffersAction, fetchPropertyAction } from '../api-actions';
 
-const initialState: OffersData = {
+type Offers = {
+  offers: Offer[];
+  property: Offer | null;
+  fetchStatus: FetchStatus;
+}
+
+const initialState: Offers = {
   offers: [],
-  comments: [],
-  favorites: [],
-  isOffersDataLoading: false,
-  hasError: false,
-  property: null
+  property: null,
+  fetchStatus: FetchStatus.Idle
 };
 
-export const offersData = createSlice({
-  name: NameSpace.Data,
+export const offers = createSlice({
+  name: NameSpace.Offer,
   initialState,
   reducers: {},
   extraReducers(builder) {
     builder
       .addCase(fetchOffersAction.pending, (state) => {
-        state.isOffersDataLoading = true;
-        state.hasError = false;
+        state.fetchStatus = FetchStatus.Pending;
       })
       .addCase(fetchOffersAction.fulfilled, (state, action) => {
         state.offers = action.payload;
-        state.isOffersDataLoading = false;
+        state.fetchStatus = FetchStatus.Success;
       })
       .addCase(fetchOffersAction.rejected, (state) => {
-        state.isOffersDataLoading = false;
-        state.hasError = true;
+        state.fetchStatus = FetchStatus.Error;
       })
       .addCase(fetchPropertyAction.pending, (state) => {
-        state.isOffersDataLoading = true;
+        state.fetchStatus = FetchStatus.Pending;
       })
       .addCase(fetchPropertyAction.fulfilled, (state, action) => {
         state.property = action.payload;
+        state.fetchStatus = FetchStatus.Success;
       });
   },
 });

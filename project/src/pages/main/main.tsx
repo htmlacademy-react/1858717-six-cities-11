@@ -7,8 +7,8 @@ import { Helmet } from 'react-helmet-async';
 import { useState } from 'react';
 import { useAppSelector } from '../../hooks';
 import { getOffersByCity, getSortedOffers } from '../../offer';
-import { getCity, getSortType } from '../../store/offers-process/selectors';
-import { getOffers } from '../../store/offers-data/selectors';
+import { getCity, getSortType } from '../../store/ui/selectors';
+import { getOffers } from '../../store/offers/selectors';
 
 
 function Main(): JSX.Element {

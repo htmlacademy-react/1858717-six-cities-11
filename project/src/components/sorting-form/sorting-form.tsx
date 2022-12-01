@@ -3,8 +3,8 @@ import { SortType } from '../../const';
 import { useState, useRef} from 'react';
 import { useOnClickOutside } from 'usehooks-ts';
 import cn from 'classnames';
-import { getSortType } from '../../store/offers-process/selectors';
-import { changeSortType } from '../../store/offers-process/offers-process';
+import { getSortType } from '../../store/ui/selectors';
+import { changeSortType } from '../../store/ui/ui';
 
 function SortingForm(): JSX.Element {
   const [open, setOpen] = useState(false);
