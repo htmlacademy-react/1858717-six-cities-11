@@ -1,18 +1,24 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { FetchStatus, NameSpace } from '../../const';
 import { Offer } from '../../types/offers';
-import { fetchOffersAction, fetchPropertyAction } from '../api-actions';
+import { fetchNearbyAction, fetchOffersAction, fetchPropertyAction } from '../api-actions';
 
 type Offers = {
   offers: Offer[];
   property: Offer | null;
-  fetchStatus: FetchStatus;
+  nearby: Offer[];
+  fetchOffersStatus: FetchStatus;
+  fetchPropertyStatus: FetchStatus;
+  fetchNearbyStatus: FetchStatus;
 }
 
 const initialState: Offers = {
   offers: [],
   property: null,
-  fetchStatus: FetchStatus.Idle
+  nearby: [],
+  fetchOffersStatus: FetchStatus.Idle,
+  fetchPropertyStatus: FetchStatus.Idle,
+  fetchNearbyStatus: FetchStatus.Idle
 };
 
 export const offers = createSlice({
@@ -22,21 +28,34 @@ export const offers = createSlice({
   extraReducers(builder) {
     builder
       .addCase(fetchOffersAction.pending, (state) => {
-        state.fetchStatus = FetchStatus.Pending;
+        state.fetchOffersStatus = FetchStatus.Pending;
       })
       .addCase(fetchOffersAction.fulfilled, (state, action) => {
         state.offers = action.payload;
-        state.fetchStatus = FetchStatus.Success;
+        state.fetchOffersStatus = FetchStatus.Success;
       })
       .addCase(fetchOffersAction.rejected, (state) => {
-        state.fetchStatus = FetchStatus.Error;
+        state.fetchOffersStatus = FetchStatus.Error;
       })
       .addCase(fetchPropertyAction.pending, (state) => {
-        state.fetchStatus = FetchStatus.Pending;
+        state.fetchPropertyStatus = FetchStatus.Pending;
       })
       .addCase(fetchPropertyAction.fulfilled, (state, action) => {
         state.property = action.payload;
-        state.fetchStatus = FetchStatus.Success;
+        state.fetchPropertyStatus = FetchStatus.Success;
+      })
+      .addCase(fetchPropertyAction.rejected, (state) => {
+        state.fetchPropertyStatus = FetchStatus.Error;
+      })
+      .addCase(fetchNearbyAction.fulfilled, (state, action) => {
+        state.nearby = action.payload;
+        state.fetchNearbyStatus = FetchStatus.Success;
+      })
+      .addCase(fetchNearbyAction.rejected, (state) => {
+        state.fetchNearbyStatus = FetchStatus.Error;
+      })
+      .addCase(fetchNearbyAction.pending, (state) => {
+        state.fetchNearbyStatus = FetchStatus.Pending;
       });
   },
 });

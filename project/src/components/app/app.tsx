@@ -4,7 +4,6 @@ import Login from '../../pages/login/login';
 import Room from '../../pages/room/room';
 import PageNotFound from '../../pages/page-404/page-404';
 import { AppRoute, AuthorizationStatus, FetchStatus } from '../../const';
-import { Review } from '../../types/reviews';
 import PrivateRoute from '../private-route/private-route';
 import { Route, Routes } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
@@ -16,11 +15,7 @@ import { getAuthorizationStatus } from '../../store/user/selectors';
 import { getOffersFetchStatus } from '../../store/offers/selectors';
 import ErrorScreen from '../../pages/error-screen/error-screen';
 
-type AppScreenProps = {
-  reviews: Review[];
-};
-
-function App({reviews}: AppScreenProps): JSX.Element {
+function App(): JSX.Element {
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const offersFetchStatus = useAppSelector(getOffersFetchStatus);
 
@@ -54,7 +49,7 @@ function App({reviews}: AppScreenProps): JSX.Element {
                 </PrivateRoute>
               }
             />
-            <Route path={AppRoute.Offer} element={<Room reviews={reviews}/>} />
+            <Route path={AppRoute.Offer} element={<Room />} />
           </Route>
           <Route path={AppRoute.NotFound} element={<PageNotFound />} />
         </Routes>

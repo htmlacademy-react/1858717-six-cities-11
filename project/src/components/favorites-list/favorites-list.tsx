@@ -1,15 +1,14 @@
 import { Link } from 'react-router-dom';
-import { useAppSelector } from '../../hooks';
-import { getOffers } from '../../store/offers/selectors';
 import { Offer } from '../../types/offers';
 import Card from '../card/card';
 
-function FavoritesList(): JSX.Element {
-  const offers = useAppSelector(getOffers);
+type FavoritesListProps = {
+  offers: Offer[];
+}
 
-  const favoriteOffers = offers.filter((offer) => offer.isFavorite);
+function FavoritesList({offers}: FavoritesListProps): JSX.Element {
 
-  const offersByCity = favoriteOffers.reduce<{ [key: string]: Offer[] }>(( acc, cur ) =>
+  const offersByCity = offers.reduce<{ [key: string]: Offer[] }>(( acc, cur ) =>
   {
     if (!acc[cur.city.name]) {
       acc[cur.city.name] = [];

@@ -7,7 +7,8 @@ import { APIRoute, AppRoute } from '../const';
 import { AuthData } from '../types/auth-data';
 import { UserData } from '../types/user-data';
 import { dropToken, saveToken } from '../services/token';
-import { Review } from '../types/reviews';
+import { Review, ReviewFormData } from '../types/reviews';
+import { pushNotification } from './notifications/notifications';
 
 export const fetchOffersAction = createAsyncThunk<Offer[], undefined, {
   dispatch: AppDispatch;
@@ -16,8 +17,14 @@ export const fetchOffersAction = createAsyncThunk<Offer[], undefined, {
 }>(
   'data/fetchOffers',
   async (_arg, {dispatch, extra: api}) => {
-    const {data} = await api.get<Offer[]>(APIRoute.Hotels);
-    return data;
+    try {
+      const {data} = await api.get<Offer[]>(APIRoute.Hotels);
+      return data;
+    } catch(err) {
+      dispatch(pushNotification({type: 'error', message: 'Can not download hotels'}));
+      throw err;
+    }
+
   },
 );
 
@@ -28,9 +35,14 @@ export const fetchPropertyAction = createAsyncThunk<Offer, string, {
 }>(
   'data/fetchProperty',
   async(id, {dispatch, extra: api}) => {
-    const {data} = await api.get<Offer>(`${APIRoute.Hotels}${id}`);
+    try {
+      const {data} = await api.get<Offer>(`${APIRoute.Hotels}/${id}`);
 
-    return data;
+      return data;
+    } catch(err) {
+      dispatch(pushNotification({type: 'error', message: 'Can not download property'}));
+      throw err;
+    }
   }
 );
 
@@ -40,10 +52,16 @@ export const fetchCommentsAction = createAsyncThunk<Review[], string, {
   extra: AxiosInstance;
 }> (
   'data/fetchComments',
-  async(id, {extra: api}) => {
-    const {data} = await api.get<Review[]>(`${APIRoute.Comments}${id}`);
+  async(id, {dispatch, extra: api}) => {
+    try {
+      const {data} = await api.get<Review[]>(`${APIRoute.Comments}/${id}`);
 
-    return data;
+      return data;
+    } catch(err) {
+      dispatch(pushNotification({type: 'warning', message: 'Sorry, can not download reviews.'}));
+
+      throw err;
+    }
   }
 );
 
@@ -53,10 +71,35 @@ export const fetchFavoritesAction = createAsyncThunk<Offer[], undefined, {
   extra: AxiosInstance;
 }> (
   'data/fetchFavorites',
-  async(_arg, {extra: api}) => {
-    const {data} = await api.get<Offer[]>(APIRoute.Favorites);
+  async(_arg, {dispatch, extra: api}) => {
+    try {
+      const {data} = await api.get<Offer[]>(APIRoute.Favorites);
 
-    return data;
+      return data;
+    } catch(err) {
+      dispatch(pushNotification({type: 'error', message: 'Can not download favorite hotels'}));
+
+      throw err;
+    }
+  }
+);
+
+export const fetchNearbyAction = createAsyncThunk<Offer[], string, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}> (
+  'data/fetchNearby',
+  async(id, {dispatch, extra: api}) => {
+    try {
+      const {data} = await api.get<Offer[]>(`${APIRoute.Hotels}/${id}/nearby`);
+
+      return data;
+    } catch(err) {
+      dispatch(pushNotification({type: 'warning', message: 'Sorry, can not download near places.'}));
+
+      throw err;
+    }
   }
 );
 
@@ -78,11 +121,17 @@ export const loginAction = createAsyncThunk<UserData, AuthData, {
 }>(
   'user/login',
   async({email, password}, {dispatch, extra: api}) => {
-    const {data} = await api.post<UserData>(APIRoute.Login, {email, password});
-    saveToken(data.token);
-    dispatch(redirectToRoute(AppRoute.Root));
+    try {
+      const {data} = await api.post<UserData>(APIRoute.Login, {email, password});
+      saveToken(data.token);
+      dispatch(redirectToRoute(AppRoute.Root));
 
-    return data;
+      return data;
+    } catch(err) {
+      dispatch(pushNotification({type: 'error', message: 'Failed on login. Please try again'}));
+
+      throw err;
+    }
   }
 );
 
@@ -95,5 +144,24 @@ export const logoutAction = createAsyncThunk<void, undefined, {
   async(_arg, {dispatch, extra: api}) => {
     await api.delete(APIRoute.Logout);
     dropToken();
+  }
+);
+
+export const postCommentAction = createAsyncThunk<Review[], [string, ReviewFormData], {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'ui/postComment',
+  async([id, {comment, rating}], {dispatch, extra: api}) => {
+    try {
+      const {data} = await api.post<Review[]>(`${APIRoute.Comments}/${id}`, {comment, rating});
+
+      return data;
+    } catch(err) {
+      dispatch(pushNotification({type: 'error', message: 'Can not send review. Please, try again'}));
+
+      throw err;
+    }
   }
 );

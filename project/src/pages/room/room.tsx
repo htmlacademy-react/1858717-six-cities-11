@@ -6,25 +6,39 @@ import Reviews from '../../components/reviews/reviews';
 import HostInfo from '../../components/host/host';
 import CardsList from '../../components/cards-list/cards-list';
 import { Helmet } from 'react-helmet-async';
-import { Review } from '../../types/reviews';
 import { useParams, Navigate } from 'react-router-dom';
 import { useEffect } from 'react';
-import { AppRoute, MAX_RATING } from '../../const';
-import { useAppSelector } from '../../hooks';
-import { getOffers } from '../../store/offers/selectors';
+import { AppRoute, FetchStatus, MAX_RATING } from '../../const';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { getNearbyOffers, getProperty, getPropertyFetchStatus } from '../../store/offers/selectors';
+import { fetchCommentsAction, fetchNearbyAction, fetchPropertyAction } from '../../store/api-actions';
+import { FullPageSpinner } from '../../components/fullpage-spinner/fullpage-spinner';
+import ErrorScreen from '../error-screen/error-screen';
 
-type RoomProps = {
-  reviews: Review[];
-};
-
-function Room({reviews}: RoomProps): JSX.Element {
+function Room(): JSX.Element {
   const { id } = useParams();
-  const offers = useAppSelector(getOffers);
-  const property = offers.find((currentOffer) => currentOffer.id === Number(id));
+  const dispatch = useAppDispatch();
+  const fetchPropertyStatus = useAppSelector(getPropertyFetchStatus);
 
   useEffect(()=> {
     window.scrollTo(0, 0);
-  }, [id]);
+    if (id) {
+      dispatch(fetchPropertyAction(id));
+      dispatch(fetchCommentsAction(id));
+      dispatch(fetchNearbyAction(id));
+    }
+  }, []);
+
+  const property = useAppSelector(getProperty);
+  const nearPlaces = useAppSelector(getNearbyOffers);
+
+  if (fetchPropertyStatus === FetchStatus.Pending) {
+    return <FullPageSpinner size={'big'} />;
+  }
+
+  if (fetchPropertyStatus === FetchStatus.Error) {
+    return <ErrorScreen />;
+  }
 
   if (property) {
     const {
@@ -44,7 +58,6 @@ function Room({reviews}: RoomProps): JSX.Element {
     } = property;
     const typeOfAprt = type[0].toUpperCase() + type.slice(1);
     const ratingInPercent = (rating * 100) / MAX_RATING;
-    const nearPlaces = offers.filter((offer) => offer.id !== property.id).slice(0, 3);
 
     return (
       <div className="page">
@@ -110,17 +123,18 @@ function Room({reviews}: RoomProps): JSX.Element {
                     </ul>
                   </div>
                   <HostInfo host={host} description={description}/>
-                  <Reviews reviews={reviews} />
+                  <Reviews />
                 </div>
               </div>
-              <Map className="property__map" city={city.location} offers={offers} selectedOffer={property.id}/>
+              <Map className="property__map" city={city.location} offers={nearPlaces} selectedOffer={property.id}/>
             </section>
+            {nearPlaces.length > 0 &&
             <div className="container">
               <section className="near-places places">
                 <h2 className="near-places__title">Other places in the neighbourhood</h2>
-                {nearPlaces.length > 0 && <CardsList offers={nearPlaces} place="near" />}
+                <CardsList offers={nearPlaces} place="near" />
               </section>
-            </div>
+            </div>}
           </main>
         </Layout>
       </div>

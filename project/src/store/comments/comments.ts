@@ -1,16 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { FetchStatus, NameSpace } from '../../const';
 import { Review } from '../../types/reviews';
-import { fetchCommentsAction } from '../api-actions';
+import { fetchCommentsAction, postCommentAction } from '../api-actions';
 
 type Comments = {
   comments: Review[];
   fetchStatus: FetchStatus;
+  postStatus: FetchStatus;
 }
 
 const initialState: Comments = {
   comments: [],
-  fetchStatus: FetchStatus.Idle
+  fetchStatus: FetchStatus.Idle,
+  postStatus: FetchStatus.Idle
 };
 
 export const comments = createSlice({
@@ -28,6 +30,16 @@ export const comments = createSlice({
       })
       .addCase(fetchCommentsAction.rejected, (state) => {
         state.fetchStatus = FetchStatus.Error;
+      })
+      .addCase(postCommentAction.fulfilled, (state, action) => {
+        state.comments = action.payload;
+        state.postStatus = FetchStatus.Success;
+      })
+      .addCase(postCommentAction.pending, (state) => {
+        state.postStatus = FetchStatus.Pending;
+      })
+      .addCase(postCommentAction.rejected, (state) => {
+        state.postStatus = FetchStatus.Error;
       });
   }
 });

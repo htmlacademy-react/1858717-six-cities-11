@@ -51,7 +51,8 @@ export enum NameSpace {
   Offer = 'OFFER',
   User = 'USER',
   Comments ='COMMENTS',
-  Favorites ='FAVORITES'
+  Favorites ='FAVORITES',
+  Notifications = 'NOTIFICATIONS'
 }
 
 export enum FetchStatus {
