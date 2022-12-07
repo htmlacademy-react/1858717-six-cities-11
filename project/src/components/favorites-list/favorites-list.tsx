@@ -7,9 +7,8 @@ type FavoritesListProps = {
 }
 
 function FavoritesList({offers}: FavoritesListProps): JSX.Element {
-  const favoriteOffers = offers.filter((offer) => offer.isFavorite);
 
-  const offersByCity = favoriteOffers.reduce<{ [key: string]: Offer[] }>(( acc, cur ) =>
+  const offersByCity = offers.reduce<{ [key: string]: Offer[] }>(( acc, cur ) =>
   {
     if (!acc[cur.city.name]) {
       acc[cur.city.name] = [];

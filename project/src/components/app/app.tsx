@@ -3,8 +3,7 @@ import Favorites from '../../pages/favorites/favorites';
 import Login from '../../pages/login/login';
 import Room from '../../pages/room/room';
 import PageNotFound from '../../pages/page-404/page-404';
-import { AppRoute, AuthorizationStatus } from '../../const';
-import { Review } from '../../types/reviews';
+import { AppRoute, AuthorizationStatus, FetchStatus } from '../../const';
 import PrivateRoute from '../private-route/private-route';
 import { Route, Routes } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
@@ -12,18 +11,23 @@ import {useAppSelector} from '../../hooks';
 import HistoryRouter from '../history-router/history-router';
 import browserHistory from '../../browser-history';
 import { FullPageSpinner } from '../fullpage-spinner/fullpage-spinner';
+import { getAuthorizationStatus } from '../../store/user/selectors';
+import { getOffersFetchStatus } from '../../store/offers/selectors';
+import ErrorScreen from '../../pages/error-screen/error-screen';
 
-type AppScreenProps = {
-  reviews: Review[];
-};
+function App(): JSX.Element {
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const offersFetchStatus = useAppSelector(getOffersFetchStatus);
 
-function App({reviews}: AppScreenProps): JSX.Element {
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
-  const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
-
-  if(authorizationStatus === AuthorizationStatus.Unknow || isOffersDataLoading) {
+  if(authorizationStatus === AuthorizationStatus.Unknow || offersFetchStatus === FetchStatus.Pending) {
     return (
       <FullPageSpinner size="big"/>
+    );
+  }
+
+  if(offersFetchStatus === FetchStatus.Error) {
+    return (
+      <ErrorScreen />
     );
   }
 
@@ -45,7 +49,7 @@ function App({reviews}: AppScreenProps): JSX.Element {
                 </PrivateRoute>
               }
             />
-            <Route path={AppRoute.Offer} element={<Room reviews={reviews}/>} />
+            <Route path={AppRoute.Offer} element={<Room />} />
           </Route>
           <Route path={AppRoute.NotFound} element={<PageNotFound />} />
         </Routes>

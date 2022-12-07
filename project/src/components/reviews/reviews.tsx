@@ -1,17 +1,19 @@
-import { Review } from '../../types/reviews';
 import ReviewList from '../review-list/review-list';
 import ReviewForm from '../review-form/review-form';
+import { useAppSelector } from '../../hooks';
+import { getComments } from '../../store/comments/selectors';
+import { getAuthorizationStatus } from '../../store/user/selectors';
+import { AuthorizationStatus } from '../../const';
 
-type ReviewsProps = {
-  reviews: Review[];
-}
+function Reviews(): JSX.Element {
+  const reviews = useAppSelector(getComments);
+  const authStatus = useAppSelector(getAuthorizationStatus);
 
-function Reviews({reviews}: ReviewsProps): JSX.Element {
   return (
     <section className="property__reviews reviews">
       <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviews.length}</span></h2>
       <ReviewList reviews={reviews} />
-      <ReviewForm />
+      {authStatus === AuthorizationStatus.Auth && <ReviewForm />}
     </section>
   );
 }

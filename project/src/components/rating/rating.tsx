@@ -2,9 +2,11 @@ type RatingProps = {
   handleFieldChange: (evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   rating: string;
   title: string | undefined;
+  currentRating: string;
+  isDisabled: boolean;
 }
 
-function Rating({ handleFieldChange, rating, title }: RatingProps): JSX.Element {
+function Rating({ handleFieldChange, rating, title, currentRating, isDisabled }: RatingProps): JSX.Element {
   return (
     <>
       <input
@@ -14,6 +16,8 @@ function Rating({ handleFieldChange, rating, title }: RatingProps): JSX.Element 
         id={`${rating}-stars`}
         type="radio"
         onChange={handleFieldChange}
+        checked={currentRating === rating}
+        disabled={isDisabled}
       />
       <label htmlFor={`${rating}-stars`} className="reviews__rating-label form__rating-label" title={title}>
         <svg className="form__star-image" width="37" height="33">

@@ -46,3 +46,18 @@ export enum APIRoute {
   Logout = '/logout'
 }
 
+export enum NameSpace {
+  Ui = 'UI',
+  Offer = 'OFFER',
+  User = 'USER',
+  Comments ='COMMENTS',
+  Favorites ='FAVORITES',
+  Notifications = 'NOTIFICATIONS'
+}
+
+export enum FetchStatus {
+  Idle = 'Idle',
+  Pending = 'Pending',
+  Success = 'Success',
+  Error = 'Error'
+}
