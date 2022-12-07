@@ -1,3 +1,4 @@
+import { createSelector } from '@reduxjs/toolkit';
 import { FetchStatus, NameSpace } from '../../const';
 import { Offer } from '../../types/offers';
 import { State } from '../../types/state';
@@ -13,4 +14,11 @@ export const getPropertyFetchStatus = (state: State): FetchStatus => state[NameS
 
 export const getNearbyOffers = (state: State): Offer[] => state[NameSpace.Offer].nearby;
 
-export const getNearbyFetchStatus = (state: State): FetchStatus => state[NameSpace.Offer].fetchNearbyStatus;
+export const selectPropertyStatus = createSelector(
+  [getPropertyFetchStatus],
+  (status) => ({
+    isLoading: [FetchStatus.Idle, FetchStatus.Pending].includes(status),
+    isError: status === FetchStatus.Error,
+    isSuccess: status === FetchStatus.Success
+  })
+);

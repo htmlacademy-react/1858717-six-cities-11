@@ -1,13 +1,15 @@
 import React, { FormEvent, useState } from 'react';
 import Rating from '../rating/rating';
-import { FetchStatus, RatingTitles } from '../../const';
+import { RatingTitles } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { postCommentAction } from '../../store/api-actions';
 import { useParams } from 'react-router-dom';
-import { getPostCommentStatus } from '../../store/comments/selectors';
+import { selectPostCommentStatus } from '../../store/comments/selectors';
 import { ReviewFormData } from '../../types/reviews';
 import Spinner from '../spinner/spinner';
-import styles from './review-form.module.css';
+
+const MIN_COMMENT_LENGTH = 50;
+const MAX_COMMENT_LENGTH = 300;
 
 function ReviewForm(): JSX.Element {
   const { id } = useParams();
@@ -18,7 +20,7 @@ function ReviewForm(): JSX.Element {
   });
 
   const dispatch = useAppDispatch();
-  const postStatus = useAppSelector(getPostCommentStatus);
+  const { isLoading } = useAppSelector(selectPostCommentStatus);
 
   const handleFieldChange = (evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = evt.target;
@@ -40,11 +42,15 @@ function ReviewForm(): JSX.Element {
         }
       ]);
     }
-    formData.comment = '';
-    formData.rating = '';
+
+    setFormData({
+      comment: '',
+      rating: ''
+    });
+
   };
 
-  const isValidComment = formData.comment.length > 50 && formData.comment.length < 300;
+  const isValidComment = formData.comment.length > MIN_COMMENT_LENGTH && formData.comment.length < MAX_COMMENT_LENGTH;
   const isValidForm = isValidComment && formData.rating;
 
   return (
@@ -64,6 +70,7 @@ function ReviewForm(): JSX.Element {
             rating={value}
             title={title}
             currentRating={formData.rating}
+            isDisabled={isLoading}
           />
         ))}
 
@@ -74,11 +81,9 @@ function ReviewForm(): JSX.Element {
         name="comment"
         placeholder="Tell how was your stay, what you like and what can be improved" onChange={handleFieldChange}
         value={formData.comment}
+        disabled={isLoading}
       >
       </textarea>
-
-      {postStatus === FetchStatus.Error &&
-        <span className={styles.errorText}> Something went wrong. Please try again later </span>}
 
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
@@ -90,9 +95,9 @@ function ReviewForm(): JSX.Element {
         <button
           className="reviews__submit form__submit button"
           type="submit"
-          disabled={!isValidForm || postStatus === FetchStatus.Pending}
+          disabled={!isValidForm || isLoading}
         >
-          {postStatus === FetchStatus.Pending ? <Spinner size="small" /> : 'Submit'}
+          {isLoading ? <Spinner size="small" /> : 'Submit'}
         </button>
       </div>
     </form>

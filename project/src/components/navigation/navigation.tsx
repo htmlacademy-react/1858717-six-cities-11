@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { logoutAction } from '../../store/api-actions';
 import { getFavorites } from '../../store/favorites/selectors';
 import { getUser } from '../../store/user/selectors';
+import styles from './navigation.module.css';
 
 function Navigation(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -22,8 +23,17 @@ function Navigation(): JSX.Element {
       <ul className="header__nav-list">
         <li className="header__nav-item user">
           <Link className="header__nav-link header__nav-link--profile" to={user ? AppRoute.Favorites : AppRoute.Login}>
-            <div className="header__avatar-wrapper user__avatar-wrapper">
-            </div>
+            {user ?
+              <div
+                className={`header__avatar-wrapper user__avatar-wrapper ${styles.avatarContainer}`}
+                style={{backgroundImage: `url(${user.avatarUrl})`}}
+              >
+              </div> :
+              <div
+                className="header__avatar-wrapper user__avatar-wrapper"
+              >
+              </div>}
+
             {user &&
               <>
                 <span className="header__user-name user__name">{user.name}</span>

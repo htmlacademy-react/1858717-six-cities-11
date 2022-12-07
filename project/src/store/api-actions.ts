@@ -1,4 +1,4 @@
-import { AxiosInstance } from 'axios';
+import { AxiosError, AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch, State } from '../types/state';
 import { Offer } from '../types/offers';
@@ -9,6 +9,7 @@ import { UserData } from '../types/user-data';
 import { dropToken, saveToken } from '../services/token';
 import { Review, ReviewFormData } from '../types/reviews';
 import { pushNotification } from './notifications/notifications';
+import { StatusCodes } from 'http-status-codes';
 
 export const fetchOffersAction = createAsyncThunk<Offer[], undefined, {
   dispatch: AppDispatch;
@@ -16,13 +17,12 @@ export const fetchOffersAction = createAsyncThunk<Offer[], undefined, {
   extra: AxiosInstance;
 }>(
   'data/fetchOffers',
-  async (_arg, {dispatch, extra: api}) => {
+  async (_arg, {extra: api, rejectWithValue}) => {
     try {
       const {data} = await api.get<Offer[]>(APIRoute.Hotels);
       return data;
     } catch(err) {
-      dispatch(pushNotification({type: 'error', message: 'Can not download hotels'}));
-      throw err;
+      return rejectWithValue(err);
     }
 
   },
@@ -40,6 +40,11 @@ export const fetchPropertyAction = createAsyncThunk<Offer, string, {
 
       return data;
     } catch(err) {
+      if(err instanceof AxiosError) {
+        if(err.response?.status === StatusCodes.NOT_FOUND) {
+          dispatch(redirectToRoute(AppRoute.NotFound));
+        }
+      }
       dispatch(pushNotification({type: 'error', message: 'Can not download property'}));
       throw err;
     }
@@ -142,8 +147,12 @@ export const logoutAction = createAsyncThunk<void, undefined, {
 }>(
   'user/logout',
   async(_arg, {dispatch, extra: api}) => {
-    await api.delete(APIRoute.Logout);
-    dropToken();
+    try {
+      await api.delete(APIRoute.Logout);
+      dropToken();
+    } catch{
+      dispatch(pushNotification({type: 'error', message: 'Cannot complete logout. Please, try again.'}));
+    }
   }
 );
 
@@ -155,7 +164,7 @@ export const postCommentAction = createAsyncThunk<Review[], [string, ReviewFormD
   'ui/postComment',
   async([id, {comment, rating}], {dispatch, extra: api}) => {
     try {
-      const {data} = await api.post<Review[]>(`${APIRoute.Comments}/${id}`, {comment, rating});
+      const {data} = await api.post<Review[]>(`${APIRoute.Comments}${id}`, {comment, rating});
 
       return data;
     } catch(err) {
