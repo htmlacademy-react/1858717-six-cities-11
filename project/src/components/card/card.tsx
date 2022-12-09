@@ -3,6 +3,8 @@ import { Link, generatePath } from 'react-router-dom';
 import { AppRoute, MAX_RATING } from '../../const';
 import BookmarksButton from '../bookmarks-button/bookmarks-button';
 import cn from 'classnames';
+import { useAppDispatch } from '../../hooks';
+import { deleteFavoriteAction, postFavoritesAction } from '../../store/api-actions';
 
 type CardProps = {
   offer: Offer;
@@ -32,6 +34,7 @@ function Card({offer, onOfferMouseEnter, place}: CardProps): JSX.Element {
   const {isPremium, previewImage, price, title, type, rating, isFavorite} = offer;
   const typeOfAprt = type[0].toUpperCase() + type.slice(1);
   const ratingInPercent = (Math.round(rating) * 100) / MAX_RATING;
+  const dispatch = useAppDispatch();
 
   const { className, imgWidth, imgHeight } = classes[place];
 
@@ -39,6 +42,14 @@ function Card({offer, onOfferMouseEnter, place}: CardProps): JSX.Element {
     {
       'favorites__card-info': place === 'favorite'
     });
+
+  const handleFavoriteButtonClick = () => {
+    if (isFavorite) {
+      dispatch(deleteFavoriteAction(offer.id));
+      return;
+    }
+    dispatch(postFavoritesAction(offer.id));
+  };
 
   return (
     <article
@@ -68,6 +79,7 @@ function Card({offer, onOfferMouseEnter, place}: CardProps): JSX.Element {
             isActive={isFavorite ? '__bookmark-button--active' : false}
             size="small"
             page="place-card"
+            onClick={handleFavoriteButtonClick}
           />
         </div>
         <div className="place-card__rating rating">

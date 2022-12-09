@@ -156,19 +156,55 @@ export const logoutAction = createAsyncThunk<void, undefined, {
   }
 );
 
-export const postCommentAction = createAsyncThunk<Review[], [string, ReviewFormData], {
+export const postCommentAction = createAsyncThunk<Review[], ReviewFormData, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
   'ui/postComment',
-  async([id, {comment, rating}], {dispatch, extra: api}) => {
+  async({id, comment, rating}, {dispatch, extra: api}) => {
     try {
-      const {data} = await api.post<Review[]>(`${APIRoute.Comments}${id}`, {comment, rating});
+      const {data} = await api.post<Review[]>(`${APIRoute.Comments}/${id}`, {comment, rating});
 
       return data;
     } catch(err) {
       dispatch(pushNotification({type: 'error', message: 'Can not send review. Please, try again'}));
+
+      throw err;
+    }
+  }
+);
+
+export const postFavoritesAction = createAsyncThunk<Offer, number, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'ui/postFavorite',
+  async(id, {dispatch, extra: api}) => {
+    try {
+      const { data } = await api.post<Offer>(`${APIRoute.Favorites}/${id}/1`);
+      return data;
+    } catch(err) {
+      dispatch(pushNotification({type: 'error', message: 'Can not add to favorites. Try again'}));
+
+      throw err;
+    }
+  }
+);
+
+export const deleteFavoriteAction = createAsyncThunk<Offer, number, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'ui/deleteFavorite',
+  async(id, {dispatch, extra: api}) => {
+    try {
+      const { data } = await api.post<Offer>(`${APIRoute.Favorites}/${id}/0`);
+      return data;
+    } catch(err) {
+      dispatch(pushNotification({type: 'error', message: 'Can not delete favorite. Try again'}));
 
       throw err;
     }

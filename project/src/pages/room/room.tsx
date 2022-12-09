@@ -11,7 +11,7 @@ import { useEffect } from 'react';
 import { MAX_RATING } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getNearbyOffers, getProperty, selectPropertyStatus } from '../../store/offers/selectors';
-import { fetchCommentsAction, fetchNearbyAction, fetchPropertyAction } from '../../store/api-actions';
+import { deleteFavoriteAction, fetchCommentsAction, fetchNearbyAction, fetchPropertyAction, postFavoritesAction } from '../../store/api-actions';
 import { FullPageSpinner } from '../../components/fullpage-spinner/fullpage-spinner';
 import ErrorScreen from '../error-screen/error-screen';
 
@@ -30,6 +30,14 @@ function Room(): JSX.Element {
       dispatch(fetchNearbyAction(id));
     }
   }, [id, dispatch]);
+
+  const handleFavoriteButtonClick = () => {
+    if (isFavorite) {
+      dispatch(deleteFavoriteAction(Number(id)));
+      return;
+    }
+    dispatch(postFavoritesAction(Number(id)));
+  };
 
   if (isLoading) {
     return <FullPageSpinner size={'big'} />;
@@ -84,6 +92,7 @@ function Room(): JSX.Element {
                     isActive={isFavorite ? '__bookmark-button--active' : false}
                     size="big"
                     page="property"
+                    onClick={handleFavoriteButtonClick}
                   />
                 </div>
                 <div className="property__rating rating">

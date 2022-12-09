@@ -9,6 +9,7 @@ import { useAppSelector } from '../../hooks';
 import { getOffersByCity, getSortedOffers } from '../../offer';
 import { getCity, getSortType } from '../../store/ui/selectors';
 import { getOffers } from '../../store/offers/selectors';
+import MainEmpty from '../main-empty/main-empty';
 
 
 function Main(): JSX.Element {
@@ -16,6 +17,10 @@ function Main(): JSX.Element {
   const currentCity = useAppSelector(getCity);
   const offers = useAppSelector(getOffers);
   const sortType = useAppSelector(getSortType);
+
+  if (offers.length === 0) {
+    return <MainEmpty currentCity={currentCity}/>;
+  }
 
   const offersByCity = getOffersByCity(currentCity, offers);
 
