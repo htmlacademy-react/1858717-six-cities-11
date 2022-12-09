@@ -7,11 +7,11 @@ import HostInfo from '../../components/host/host';
 import CardsList from '../../components/cards-list/cards-list';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { MAX_RATING } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getNearbyOffers, getProperty, selectPropertyStatus } from '../../store/offers/selectors';
-import { deleteFavoriteAction, fetchCommentsAction, fetchNearbyAction, fetchPropertyAction, postFavoritesAction } from '../../store/api-actions';
+import { fetchCommentsAction, fetchNearbyAction, fetchPropertyAction, postFavoritesAction } from '../../store/api-actions';
 import { FullPageSpinner } from '../../components/fullpage-spinner/fullpage-spinner';
 import ErrorScreen from '../error-screen/error-screen';
 
@@ -22,21 +22,25 @@ function Room(): JSX.Element {
   const property = useAppSelector(getProperty);
   const nearPlaces = useAppSelector(getNearbyOffers);
 
+  const [isFavoriteStatus, setFavorite] = useState(property?.isFavorite);
+
   useEffect(() => {
     window.scrollTo(0, 0);
     if (id) {
       dispatch(fetchPropertyAction(id));
       dispatch(fetchCommentsAction(id));
       dispatch(fetchNearbyAction(id));
+      setFavorite(property?.isFavorite);
     }
-  }, [id, dispatch]);
+  }, [id, dispatch, property?.isFavorite]);
 
   const handleFavoriteButtonClick = () => {
-    if (isFavorite) {
-      dispatch(deleteFavoriteAction(Number(id)));
-      return;
-    }
-    dispatch(postFavoritesAction(Number(id)));
+    const data = {
+      id: Number(id),
+      status: Number(!isFavoriteStatus)
+    };
+    setFavorite(!isFavoriteStatus);
+    dispatch(postFavoritesAction(data));
   };
 
   if (isLoading) {
@@ -59,7 +63,6 @@ function Room(): JSX.Element {
     goods,
     host,
     description,
-    isFavorite,
     city
   } = property;
   const typeOfAprt = type[0].toUpperCase() + type.slice(1);
@@ -89,7 +92,7 @@ function Room(): JSX.Element {
                     {title}
                   </h1>
                   <BookmarksButton
-                    isActive={isFavorite ? '__bookmark-button--active' : false}
+                    isActive={isFavoriteStatus ? '__bookmark-button--active' : false}
                     size="big"
                     page="property"
                     onClick={handleFavoriteButtonClick}

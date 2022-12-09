@@ -1,3 +1,6 @@
+import { useAppSelector } from '../../hooks';
+import { selectPostFavoriteStatus } from '../../store/favorites/selectors';
+
 type BookmarksButtonProps = {
   isActive: false | '__bookmark-button--active';
   size: 'small' | 'big';
@@ -17,6 +20,7 @@ const sizes = {
 };
 
 function BookmarksButton({ isActive, size, page, onClick }: BookmarksButtonProps): JSX.Element {
+  const {isLoading} = useAppSelector(selectPostFavoriteStatus);
   const {width, height} = sizes[size];
   const className = isActive ? `${page}${isActive}` : '';
 
@@ -25,6 +29,7 @@ function BookmarksButton({ isActive, size, page, onClick }: BookmarksButtonProps
       className={`${page}__bookmark-button ${className} button`}
       type="button"
       onClick={onClick}
+      disabled={isLoading}
     >
       <svg className="place-card__bookmark-icon" width={width} height={height}>
         <use xlinkHref="#icon-bookmark"></use>

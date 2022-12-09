@@ -4,7 +4,8 @@ import { AppRoute, MAX_RATING } from '../../const';
 import BookmarksButton from '../bookmarks-button/bookmarks-button';
 import cn from 'classnames';
 import { useAppDispatch } from '../../hooks';
-import { deleteFavoriteAction, postFavoritesAction } from '../../store/api-actions';
+import { postFavoritesAction } from '../../store/api-actions';
+import { useEffect, useState } from 'react';
 
 type CardProps = {
   offer: Offer;
@@ -35,8 +36,12 @@ function Card({offer, onOfferMouseEnter, place}: CardProps): JSX.Element {
   const typeOfAprt = type[0].toUpperCase() + type.slice(1);
   const ratingInPercent = (Math.round(rating) * 100) / MAX_RATING;
   const dispatch = useAppDispatch();
-
+  const [isFavoriteStatus, setFavorite] = useState(isFavorite);
   const { className, imgWidth, imgHeight } = classes[place];
+
+  useEffect(() => {
+    setFavorite(isFavorite);
+  }, [isFavorite]);
 
   const infoClassName = cn('place-card__info',
     {
@@ -44,11 +49,12 @@ function Card({offer, onOfferMouseEnter, place}: CardProps): JSX.Element {
     });
 
   const handleFavoriteButtonClick = () => {
-    if (isFavorite) {
-      dispatch(deleteFavoriteAction(offer.id));
-      return;
-    }
-    dispatch(postFavoritesAction(offer.id));
+    const data = {
+      id: offer.id,
+      status: Number(!isFavoriteStatus)
+    };
+    setFavorite(!isFavoriteStatus);
+    dispatch(postFavoritesAction(data));
   };
 
   return (
@@ -76,7 +82,7 @@ function Card({offer, onOfferMouseEnter, place}: CardProps): JSX.Element {
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
           <BookmarksButton
-            isActive={isFavorite ? '__bookmark-button--active' : false}
+            isActive={isFavoriteStatus ? '__bookmark-button--active' : false}
             size="small"
             page="place-card"
             onClick={handleFavoriteButtonClick}

@@ -3,20 +3,24 @@ import { Link, generatePath } from 'react-router-dom';
 import { AppRoute, MAX_RATING } from '../../const';
 import BookmarksButton from '../bookmarks-button/bookmarks-button';
 import { useAppDispatch } from '../../hooks';
-import { deleteFavoriteAction } from '../../store/api-actions';
+import { postFavoritesAction } from '../../store/api-actions';
 
 type FavoritesItemProps = {
   offer: Offer;
 };
 
 function FavoritesItem({offer}: FavoritesItemProps): JSX.Element {
-  const {isPremium, previewImage, price, title, type, rating} = offer;
+  const {isPremium, previewImage, price, title, type, rating, id, isFavorite} = offer;
   const dispatch = useAppDispatch();
   const typeOfAprt = type[0].toUpperCase() + type.slice(1);
   const ratingInPercent = (rating * 100) / MAX_RATING;
 
   const handleFavoriteButtonClick = () => {
-    dispatch(deleteFavoriteAction(offer.id));
+    const data = {
+      id: id,
+      status: Number(!isFavorite)
+    };
+    dispatch(postFavoritesAction(data));
   };
 
   return (
