@@ -11,7 +11,7 @@ import { useEffect } from 'react';
 import { MAX_RATING } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getNearbyOffers, getProperty, selectPropertyStatus } from '../../store/offers/selectors';
-import { fetchCommentsAction, fetchNearbyAction, fetchPropertyAction } from '../../store/api-actions';
+import { fetchCommentsAction, fetchNearbyAction, fetchPropertyAction, postFavoritesAction } from '../../store/api-actions';
 import { FullPageSpinner } from '../../components/fullpage-spinner/fullpage-spinner';
 import ErrorScreen from '../error-screen/error-screen';
 
@@ -30,6 +30,13 @@ function Room(): JSX.Element {
       dispatch(fetchNearbyAction(id));
     }
   }, [id, dispatch]);
+
+  const handleFavoriteButtonClick = () => {
+    dispatch(postFavoritesAction({
+      id: Number(id),
+      status: Number(!isFavorite)
+    }));
+  };
 
   if (isLoading) {
     return <FullPageSpinner size={'big'} />;
@@ -51,8 +58,8 @@ function Room(): JSX.Element {
     goods,
     host,
     description,
-    isFavorite,
-    city
+    city,
+    isFavorite
   } = property;
   const typeOfAprt = type[0].toUpperCase() + type.slice(1);
   const ratingInPercent = (Math.round(rating) * 100) / MAX_RATING;
@@ -81,9 +88,10 @@ function Room(): JSX.Element {
                     {title}
                   </h1>
                   <BookmarksButton
-                    isActive={isFavorite ? '__bookmark-button--active' : false}
+                    isActive={isFavorite}
                     size="big"
                     page="property"
+                    onClick={handleFavoriteButtonClick}
                   />
                 </div>
                 <div className="property__rating rating">

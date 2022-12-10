@@ -10,6 +10,7 @@ import { dropToken, saveToken } from '../services/token';
 import { Review, ReviewFormData } from '../types/reviews';
 import { pushNotification } from './notifications/notifications';
 import { StatusCodes } from 'http-status-codes';
+import { FavoritePayload } from '../types/favorite-payload';
 
 export const fetchOffersAction = createAsyncThunk<Offer[], undefined, {
   dispatch: AppDispatch;
@@ -108,14 +109,15 @@ export const fetchNearbyAction = createAsyncThunk<Offer[], string, {
   }
 );
 
-export const checkAuthAction = createAsyncThunk<void, undefined, {
+export const checkAuthAction = createAsyncThunk<UserData, undefined, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
   'user/checkAuth',
   async (_arg, {extra: api}) => {
-    await api.get(APIRoute.Login);
+    const {data} = await api.get<UserData>(APIRoute.Login);
+    return data;
   }
 );
 
@@ -156,19 +158,37 @@ export const logoutAction = createAsyncThunk<void, undefined, {
   }
 );
 
-export const postCommentAction = createAsyncThunk<Review[], [string, ReviewFormData], {
+export const postCommentAction = createAsyncThunk<Review[], ReviewFormData, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
-  'ui/postComment',
-  async([id, {comment, rating}], {dispatch, extra: api}) => {
+  'comments/postComment',
+  async({id, comment, rating}, {dispatch, extra: api}) => {
     try {
-      const {data} = await api.post<Review[]>(`${APIRoute.Comments}${id}`, {comment, rating});
+      const {data} = await api.post<Review[]>(`${APIRoute.Comments}/${id}`, {comment, rating});
 
       return data;
     } catch(err) {
       dispatch(pushNotification({type: 'error', message: 'Can not send review. Please, try again'}));
+
+      throw err;
+    }
+  }
+);
+
+export const postFavoritesAction = createAsyncThunk<Offer, FavoritePayload, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'favorites/postFavorite',
+  async({id, status}, {dispatch, extra: api}) => {
+    try {
+      const { data } = await api.post<Offer>(`${APIRoute.Favorites}/${id}/${status}`);
+      return data;
+    } catch(err) {
+      dispatch(pushNotification({type: 'error', message: 'Can not add to favorites. Try again'}));
 
       throw err;
     }

@@ -3,6 +3,8 @@ import { Link, generatePath } from 'react-router-dom';
 import { AppRoute, MAX_RATING } from '../../const';
 import BookmarksButton from '../bookmarks-button/bookmarks-button';
 import cn from 'classnames';
+import { useAppDispatch } from '../../hooks';
+import { postFavoritesAction } from '../../store/api-actions';
 
 type CardProps = {
   offer: Offer;
@@ -29,16 +31,23 @@ const classes = {
 };
 
 function Card({offer, onOfferMouseEnter, place}: CardProps): JSX.Element {
-  const {isPremium, previewImage, price, title, type, rating, isFavorite} = offer;
+  const {isPremium, previewImage, price, title, type, rating, isFavorite, id} = offer;
   const typeOfAprt = type[0].toUpperCase() + type.slice(1);
   const ratingInPercent = (Math.round(rating) * 100) / MAX_RATING;
-
+  const dispatch = useAppDispatch();
   const { className, imgWidth, imgHeight } = classes[place];
 
   const infoClassName = cn('place-card__info',
     {
       'favorites__card-info': place === 'favorite'
     });
+
+  const handleFavoriteButtonClick = () => {
+    dispatch(postFavoritesAction({
+      id,
+      status: Number(!isFavorite)
+    }));
+  };
 
   return (
     <article
@@ -65,9 +74,10 @@ function Card({offer, onOfferMouseEnter, place}: CardProps): JSX.Element {
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
           <BookmarksButton
-            isActive={isFavorite ? '__bookmark-button--active' : false}
+            isActive={isFavorite}
             size="small"
             page="place-card"
+            onClick={handleFavoriteButtonClick}
           />
         </div>
         <div className="place-card__rating rating">
