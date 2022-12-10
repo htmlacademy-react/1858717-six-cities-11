@@ -109,14 +109,15 @@ export const fetchNearbyAction = createAsyncThunk<Offer[], string, {
   }
 );
 
-export const checkAuthAction = createAsyncThunk<void, undefined, {
+export const checkAuthAction = createAsyncThunk<UserData, undefined, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
   'user/checkAuth',
   async (_arg, {extra: api}) => {
-    await api.get(APIRoute.Login);
+    const {data} = await api.get<UserData>(APIRoute.Login);
+    return data;
   }
 );
 
@@ -162,7 +163,7 @@ export const postCommentAction = createAsyncThunk<Review[], ReviewFormData, {
   state: State;
   extra: AxiosInstance;
 }>(
-  'ui/postComment',
+  'comments/postComment',
   async({id, comment, rating}, {dispatch, extra: api}) => {
     try {
       const {data} = await api.post<Review[]>(`${APIRoute.Comments}/${id}`, {comment, rating});
@@ -181,7 +182,7 @@ export const postFavoritesAction = createAsyncThunk<Offer, FavoritePayload, {
   state: State;
   extra: AxiosInstance;
 }>(
-  'ui/postFavorite',
+  'favorites/postFavorite',
   async({id, status}, {dispatch, extra: api}) => {
     try {
       const { data } = await api.post<Offer>(`${APIRoute.Favorites}/${id}/${status}`);

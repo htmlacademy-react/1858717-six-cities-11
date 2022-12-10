@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { FetchStatus, NameSpace } from '../../const';
 import { Offer } from '../../types/offers';
-import { fetchNearbyAction, fetchOffersAction, fetchPropertyAction } from '../api-actions';
+import { fetchNearbyAction, fetchOffersAction, fetchPropertyAction, logoutAction, postFavoritesAction } from '../api-actions';
 
 type Offers = {
   offers: Offer[];
@@ -56,6 +56,29 @@ export const offers = createSlice({
       })
       .addCase(fetchNearbyAction.pending, (state) => {
         state.fetchNearbyStatus = FetchStatus.Pending;
+      })
+      .addCase(postFavoritesAction.fulfilled, (state, action) => {
+        state.offers.forEach((offer) => {
+          if(offer.id === action.payload.id) {
+            offer.isFavorite = action.payload.isFavorite;
+          }
+        });
+        state.nearby.forEach((offer) => {
+          if(offer.id === action.payload.id) {
+            offer.isFavorite = action.payload.isFavorite;
+          }
+        });
+
+        if (state.property?.id === action.payload.id) {
+          state.property.isFavorite = action.payload.isFavorite;
+        }
+      })
+      .addCase(logoutAction.fulfilled, (state) => {
+        state.offers.forEach((offer) => {offer.isFavorite = false;});
+        state.nearby.forEach((offer) => {offer.isFavorite = false;});
+        if( state.property) {
+          state.property.isFavorite = false;
+        }
       });
   },
 });

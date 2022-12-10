@@ -14,7 +14,7 @@ export const getPostFavoriteStatus = (state: State): FetchStatus =>
 export const selectPostFavoriteStatus = createSelector(
   [getPostFavoriteStatus],
   (status) => ({
-    isLoading: [FetchStatus.Idle, FetchStatus.Pending].includes(status),
+    isLoading: status === FetchStatus.Pending,
     isError: status === FetchStatus.Error,
     isSuccess: status === FetchStatus.Success
   })

@@ -16,11 +16,10 @@ function FavoritesItem({offer}: FavoritesItemProps): JSX.Element {
   const ratingInPercent = (rating * 100) / MAX_RATING;
 
   const handleFavoriteButtonClick = () => {
-    const data = {
-      id: id,
+    dispatch(postFavoritesAction({
+      id,
       status: Number(!isFavorite)
-    };
-    dispatch(postFavoritesAction(data));
+    }));
   };
 
   return (
@@ -46,7 +45,7 @@ function FavoritesItem({offer}: FavoritesItemProps): JSX.Element {
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
           <BookmarksButton
-            isActive="__bookmark-button--active"
+            isActive={isFavorite}
             size="small"
             page="place-card"
             onClick={handleFavoriteButtonClick}

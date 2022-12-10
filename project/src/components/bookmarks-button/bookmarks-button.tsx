@@ -1,12 +1,18 @@
-import { useAppSelector } from '../../hooks';
+import cn from 'classnames';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { selectPostFavoriteStatus } from '../../store/favorites/selectors';
+import { getAuthorizationStatus } from '../../store/user/selectors';
+import { AppRoute, AuthorizationStatus } from '../../const';
+import { redirectToRoute } from '../../store/action';
 
 type BookmarksButtonProps = {
-  isActive: false | '__bookmark-button--active';
-  size: 'small' | 'big';
+  isActive: boolean;
+  size: keyof typeof sizes;
   page: 'place-card' | 'property';
   onClick: () => void;
 }
+
+const ACTIVE_CLASSNAME = '__bookmark-button--active';
 
 const sizes = {
   small: {
@@ -20,15 +26,23 @@ const sizes = {
 };
 
 function BookmarksButton({ isActive, size, page, onClick }: BookmarksButtonProps): JSX.Element {
+  const AuthStatus = useAppSelector(getAuthorizationStatus);
   const {isLoading} = useAppSelector(selectPostFavoriteStatus);
+  const dispatch = useAppDispatch();
   const {width, height} = sizes[size];
-  const className = isActive ? `${page}${isActive}` : '';
+  const activeClassName = `${page}${ACTIVE_CLASSNAME}`;
 
   return (
     <button
-      className={`${page}__bookmark-button ${className} button`}
+      className={cn(`${page}__bookmark-button button`, isActive && activeClassName)}
       type="button"
-      onClick={onClick}
+      onClick={() => {
+        if (AuthStatus === AuthorizationStatus.Auth) {
+          onClick();
+          return;
+        }
+        dispatch(redirectToRoute(AppRoute.Login));
+      }}
       disabled={isLoading}
     >
       <svg className="place-card__bookmark-icon" width={width} height={height}>

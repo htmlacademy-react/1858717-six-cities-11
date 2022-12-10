@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { FetchStatus, NameSpace } from '../../const';
 import { Offer } from '../../types/offers';
-import { fetchFavoritesAction, postFavoritesAction } from '../api-actions';
+import { fetchFavoritesAction, logoutAction, postFavoritesAction } from '../api-actions';
 
 type Favorites = {
   favorites: Offer[];
@@ -36,12 +36,17 @@ export const favorites = createSlice({
       })
       .addCase(postFavoritesAction.fulfilled, (state, action) => {
         state.postStatus = FetchStatus.Success;
-        action.payload.isFavorite === true ?
-          state.favorites.push(action.payload) :
+        if (action.payload.isFavorite) {
+          state.favorites.push(action.payload);
+        } else {
           state.favorites = state.favorites.filter(({id}) => id !== action.payload.id);
+        }
       })
       .addCase(postFavoritesAction.rejected, (state) => {
         state.postStatus = FetchStatus.Error;
+      })
+      .addCase(logoutAction.fulfilled, (state) => {
+        state.favorites = [];
       });
   }
 });

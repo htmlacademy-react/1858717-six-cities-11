@@ -7,7 +7,7 @@ import HostInfo from '../../components/host/host';
 import CardsList from '../../components/cards-list/cards-list';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { MAX_RATING } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getNearbyOffers, getProperty, selectPropertyStatus } from '../../store/offers/selectors';
@@ -22,25 +22,20 @@ function Room(): JSX.Element {
   const property = useAppSelector(getProperty);
   const nearPlaces = useAppSelector(getNearbyOffers);
 
-  const [isFavoriteStatus, setFavorite] = useState(property?.isFavorite);
-
   useEffect(() => {
     window.scrollTo(0, 0);
     if (id) {
       dispatch(fetchPropertyAction(id));
       dispatch(fetchCommentsAction(id));
       dispatch(fetchNearbyAction(id));
-      setFavorite(property?.isFavorite);
     }
-  }, [id, dispatch, property?.isFavorite]);
+  }, [id, dispatch]);
 
   const handleFavoriteButtonClick = () => {
-    const data = {
+    dispatch(postFavoritesAction({
       id: Number(id),
-      status: Number(!isFavoriteStatus)
-    };
-    setFavorite(!isFavoriteStatus);
-    dispatch(postFavoritesAction(data));
+      status: Number(!isFavorite)
+    }));
   };
 
   if (isLoading) {
@@ -63,7 +58,8 @@ function Room(): JSX.Element {
     goods,
     host,
     description,
-    city
+    city,
+    isFavorite
   } = property;
   const typeOfAprt = type[0].toUpperCase() + type.slice(1);
   const ratingInPercent = (Math.round(rating) * 100) / MAX_RATING;
@@ -92,7 +88,7 @@ function Room(): JSX.Element {
                     {title}
                   </h1>
                   <BookmarksButton
-                    isActive={isFavoriteStatus ? '__bookmark-button--active' : false}
+                    isActive={isFavorite}
                     size="big"
                     page="property"
                     onClick={handleFavoriteButtonClick}
