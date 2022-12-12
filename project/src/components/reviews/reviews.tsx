@@ -1,18 +1,18 @@
 import ReviewList from '../review-list/review-list';
 import ReviewForm from '../review-form/review-form';
 import { useAppSelector } from '../../hooks';
-import { getComments } from '../../store/comments/selectors';
+import { selectCommentsCount} from '../../store/comments/selectors';
 import { getAuthorizationStatus } from '../../store/user/selectors';
 import { AuthorizationStatus } from '../../const';
 
 function Reviews(): JSX.Element {
-  const reviews = useAppSelector(getComments);
+  const reviewsCount = useAppSelector(selectCommentsCount);
   const authStatus = useAppSelector(getAuthorizationStatus);
 
   return (
     <section className="property__reviews reviews">
-      <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviews.length}</span></h2>
-      <ReviewList reviews={reviews} />
+      <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviewsCount}</span></h2>
+      <ReviewList />
       {authStatus === AuthorizationStatus.Auth && <ReviewForm />}
     </section>
   );
